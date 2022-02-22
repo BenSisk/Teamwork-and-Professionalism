@@ -1,0 +1,35 @@
+body {
+	position: absolute;
+	width: 1440px;
+	height: 777px;
+	left: 0px;
+	top: 0px;
+
+	background: #252B42;
+	mix-blend-mode: darken;
+	border: 1px solid #252B42;
+	box-sizing: border-box;
+}
+
+h1 {
+	position: absolute;
+	width: 187px;
+	height: 58px;
+	left: calc(50% - 187px/2 - 431.5px);
+	top: calc(50% - 58px/2 + 0.5px);
+
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 32px;
+	/* identical to box height, or 133% */
+
+	letter-spacing: 0.1px;
+
+	/* light-text-color */
+
+	color: #FFFFFF;
+
+}
+
