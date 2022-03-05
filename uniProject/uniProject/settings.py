@@ -126,4 +126,4 @@ STATICFILES_DIRS = [
     '/srv/www/static/',
 ]
 
-ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', '45.147.230.182']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', '45.147.230.182', 'fatalexception.co.uk']

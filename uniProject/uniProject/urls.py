@@ -16,11 +16,11 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from .index import index
+from .admin import admin
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url('', index, name='index'),
-    url('', admin, name='admin')
+    url(r'^admin/', admin, name='admin'),
+    url('', index, name='index')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
