@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>GR Solutions - Admin</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+
+<header>
+    <img src="{% static 'css/logo.jpg' %}" alt="buisness logo">
+    <form method="post" action="../admin/loginProcess.php">
+        Username <input type="text" name="username">
+        Password <input type="password" name="password">
+        <input type="submit" value="Login">
+    </form>
+</header>
+
+
+<div class="sidenav">
+    <a href="#about">Home Page</a>
+    <a href="#services">Services</a>
+    <a href="#clients">Clients</a>
+    <a href="#contact">Contact</a>
+</div>
+<body>
+
+<main>
+    <h1>Side bar links will generate this area!</h1>
+</main>
+
+</body>
+</html>

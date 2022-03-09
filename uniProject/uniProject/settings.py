@@ -25,8 +25,6 @@ SECRET_KEY = '&x$-1&ky0h+7g9gd*05u@xa2-md6y-d%v(vpkbp4h&tuy$g)70'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -37,7 +35,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'uniProject'
+    'uniProject',
+    'adminSection',
 ]
 
 MIDDLEWARE = [
@@ -118,6 +117,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "templates")
 
@@ -126,4 +127,11 @@ STATICFILES_DIRS = [
     '/srv/www/static/',
 ]
 
-ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', '45.147.230.182']
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', '45.147.230.182', 'fatalexception.co.uk']
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/' #redirect to homepage after login
+
+AUTH_USER_MODEL = 'adminSection.AppUser'

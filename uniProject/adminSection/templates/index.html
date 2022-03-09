@@ -1,0 +1,14 @@
+{%extends 'base.html'%}
+
+   {%block title%}Home{%endblock%}
+
+    {%block link%}
+        {% if user.is_authenticated %}
+            <br>
+            <a href="/admintest" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">admin page</span> </a>
+        {% endif %}
+    {%endblock%}
+
+    {%block content%}
+    <p>this is content</p>
+    {%endblock%}
