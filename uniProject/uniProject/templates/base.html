@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+	<head>
+		{% block title %}<title>GR Solutions</title>{% endblock %}
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	</head>
+
+	<body>
+		<div id="gridContainer">
+			<header>
+				<h1>GR Solutions</h1>
+			</header>
+
+			<div id="navigationBar">
+				<nav>
+					<ul>
+						<li><a href="{% url 'index' %}">Home</a></li>
+						<li><a href="/products/">Product</a></li>
+						<li><a href="/contact/">Contact</a></li>
+						{% if user.is_authenticated %}
+						<li><a href="/logout/" title="Logout of account">Logout</a></li>
+						{% else %}
+						<li><a href="/login/" title="Login to an account">Login</a></li>
+						{% endif %}
+					</ul>
+				</nav>
+			</div>
+
+			{% block content %}
+			{% endblock %}
+
+			<footer>
+				<p>GR Solutions &copy 2022</p>
+			</footer>
+		</div>
+	</body>
+</html>

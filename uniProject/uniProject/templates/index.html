@@ -1,24 +1,22 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 {% load static %}
-<html lang="en">
-<head>
-  {% block title %}<title>Carpentry</title>{% endblock %}
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
+{% block content %}
+	<main>
+		<h2>Welcome to GR Solutions</h2>
 
-<body>
-      <h1>Carpentry</h1>
-      {% block sidebar %}
-        <ul class="sidebar-nav">
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="">Product</a></li>
-          <li><a href="">Contact</a></li>
-        </ul>
-     {% endblock %}
-</body>
-<footer>
 
-</footer>
-</html>
+		<p>We are a small business that create a variety</p>
+		<p>of products based on user needs</p>
+
+
+		<form action="Contact">
+			<input type="submit" value="Contact Us" />
+		</form>
+
+		<form action="LearnMore">
+			<input type="submit" value="Learn More" />
+		</form>
+
+	</main>
+
+{% endblock %}
