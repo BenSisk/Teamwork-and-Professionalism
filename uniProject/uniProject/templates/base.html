@@ -21,15 +21,9 @@
 						<li><a href="/products/">Product</a></li>
 						<li><a href="/contact/">Contact</a></li>
 						{% if user.is_authenticated %}
-						<li><a href="/logout/" title="Logout of account">Logout</a></li>
-						{% else %}
-						<li>
-							<form method="post">
-								{% csrf_token %}
-								{{ form.as_p }}
-								<button type="submit">Log In</button>
-							</form>
-						</li>
+						<li><a href="{% url 'logout' %}" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Logout</span></a></li>
+						{%  else %}
+						<li><a href="{% url 'login' %}" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Login</span> </a></li>
 						{% endif %}
 					</ul>
 				</nav>
