@@ -5,7 +5,7 @@
 		{% block title %}<title>GR Solutions</title>{% endblock %}
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+		<!--<link rel="stylesheet" href="{% static 'css/styles.css' %}"> -->
 	</head>
 
 	<body>
@@ -23,7 +23,13 @@
 						{% if user.is_authenticated %}
 						<li><a href="/logout/" title="Logout of account">Logout</a></li>
 						{% else %}
-						<li><a href="/login/" title="Login to an account">Login</a></li>
+						<li>
+							<form method="post">
+								{% csrf_token %}
+								{{ form.as_p }}
+								<button type="submit">Log In</button>
+							</form>
+						</li>
 						{% endif %}
 					</ul>
 				</nav>
