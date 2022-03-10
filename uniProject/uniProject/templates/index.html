@@ -2,21 +2,29 @@
 {% load static %}
 {% block content %}
 	<main>
-		<h2>Welcome to GR Solutions</h2>
+		<div id="welcomeText">
+			<h2>Welcome to GR Solutions</h2>
 
 
-		<p>We are a small business that create a variety</p>
-		<p>of products based on user needs</p>
+			<p>We are a small business that create a variety</p>
+			<p>of products based on user needs</p>
+		
 
+			<form action="Contact">
+				<input type="submit" value="Contact Us" />
+			</form>
 
-		<form action="Contact">
-			<input type="submit" value="Contact Us" />
-		</form>
-
-		<form action="LearnMore">
-			<input type="submit" value="Learn More" />
-		</form>
-
+			<form action="LearnMore">
+				<input type="submit" value="Learn More" />
+			</form>
+		</div>
+		<div id="alignLeft">
+			<img id="toroid" src="{% static 'images/Toroid.png' %}" alt="image of a toroid">
+			<img id="rectangle" src="{% static 'images/Rectangle.png' %}" alt="image of a white smartphone">
+			<img id="rectangle1" src="{% static 'images/Rectangle1.png' %}" alt="image of a white laptop">
+			<img id="cube" src="{% static 'images/RoundCube.png' %}" alt="image of a blue round cube">
+			<img id="sphere" src="{% static 'images/Sphere.png' %}" alt="image of a yellow sphere">
+		</div>
 	</main>
 
 {% endblock %}

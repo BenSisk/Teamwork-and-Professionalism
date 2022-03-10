@@ -18,8 +18,37 @@ nav {
 ul {
 	display: flex;
 	flex-flow: row;
-	margin-right: 20px;
 	list-style-type: none;
+}
+
+li {
+	margin-right: 20px;
+	font-size: 24px;
+
+}
+
+li:not(:last-child) {
+	margin-top: 10px;
+}
+
+li a {
+	color: #FFFFFF;
+}
+
+li:last-child {
+	border-radius: 15px;
+	background: #4D88F0;
+	right:75px;
+	position: absolute;
+	padding: 10px;
+}
+
+li:first-child {
+	margin-left: 15%;
+}
+
+a:link {
+	text-decoration: none;
 }
 
 main {
@@ -32,4 +61,14 @@ footer {
 
 body {
 	background: #252B42;
+}
+
+header > a {
+	margin-left: 50px;
+}
+
+#welcomeText {
+	margin-top: 10%;
+	margin-left: 15%;
+/*	margin: 0 auto;*/
 }
