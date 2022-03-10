@@ -5,13 +5,13 @@
 		{% block title %}<title>GR Solutions</title>{% endblock %}
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<!--<link rel="stylesheet" href="{% static 'css/styles.css' %}"> -->
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 	</head>
 
 	<body>
 		<div id="gridContainer">
 			<header>
-				<h1>GR Solutions</h1>
+				<a href="/" class="logo"> <img src="{% static 'images/logo.png' %}"></a>
 			</header>
 
 			<div id="navigationBar">
@@ -21,9 +21,9 @@
 						<li><a href="/products/">Product</a></li>
 						<li><a href="/contact/">Contact</a></li>
 						{% if user.is_authenticated %}
-						<li><a href="{% url 'logout' %}" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Logout</span></a></li>
+						<li><a href="{% url 'logout' %}" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="logButton">Logout</span></a></li>
 						{%  else %}
-						<li><a href="{% url 'login' %}" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">Login</span> </a></li>
+						<li><a href="{% url 'login' %}" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="logButton">Login</span> </a></li>
 						{% endif %}
 					</ul>
 				</nav>
