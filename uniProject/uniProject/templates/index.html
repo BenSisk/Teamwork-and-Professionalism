@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+	<main>
+		<div id="welcomeText">
+			<h1>Welcome to GR Solutions</h1>
+
+
+			<p>We are a small business that create a variety</p>
+			<p>of products based on user needs</p>
+
+			<div id="indexButtons">
+				<a href="/contact/" id="contactButton">Logout</a>
+				<a href="/learnMore/" id="contactButton">Learn More</a>
+			</div>
+		</div>
+		<div id="imageOuter">
+			<img id="image" src="{% static 'images/image.png' %}" alt="Collection of technology and various shapes"/>
+		</div>
+	</main>
+
+{% endblock %}
