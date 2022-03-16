@@ -1,34 +1,63 @@
-<!DOCTYPE html>
+{%extends 'base.html'%}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <title>GR Solutions - Admin</title>
+    {%block style %}
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    {%endblock%}
+    {%block content%}
+    <main>
+        <div id="maingridContainer">
 
-<header>
-    <img src="{% static 'css/logo.jpg' %}" alt="buisness logo">
-    <form method="post" action="../admin/loginProcess.php">
-        Username <input type="text" name="username">
-        Password <input type="password" name="password">
-        <input type="submit" value="Login">
-    </form>
-</header>
+            <div id="admin">
+                <h2>Admin Panel</h2>
+                {% if added %}
+                    <h3>Your password has been updated!</h3>
+                {% endif %}
+                <ul>
+                    <li id="adminlogout"><a href="{% url 'logout' %}"><span class="logButton">Logout</span></a></li>
+                    <li id="adminaccount"><a href="{% url 'account' %}"><span class="accountButton">Account</span></a></li>
+                </ul>
+            </div>
 
 
-<div class="sidenav">
-    <a href="#about">Home Page</a>
-    <a href="#services">Services</a>
-    <a href="#clients">Clients</a>
-    <a href="#contact">Contact</a>
-</div>
-<body>
+            <div id="price">
+                <div class="iconimage"><i class="fa-solid fa-magnifying-glass-dollar"></i></div>
+                <h3>Price Search</h3>
+                <p>Search and compare prices online for best value for money</p>
+                <p class="box-button"><a href="/search/">Search ></a></p>
+            </div>
 
-<main>
-    <h1>Side bar links will generate this area!</h1>
-</main>
 
-</body>
-</html>
+
+            <div id="stock">
+                <div class="iconimage"><i class="fa-solid fa-cubes"></i></i></div>
+                <h3>Stock Management</h3>
+                <p>Add, manage or remove current stock inventory</p>
+                <p class="box-button"><a href="/stock/">Manage Stock ></a></p>
+            </div>
+
+
+
+            <div id="showcase">
+                <div class="iconimage"><i class="fa-solid fa-swatchbook"></i></div>
+                <h3>Showcase</h3>
+                <p>Add new content to showcase for clients</p>
+                <p class="box-button"><a href="{% url 'upload' %}">Add Item ></a></p>
+            </div>
+
+
+
+            <div id="predict">
+                <div class="iconimage"><i class="fa-solid fa-arrow-trend-up"></i></div>
+                <h3>Price Prediction</h3>
+                <p>Get a prediction for the price trend of current materials</p>
+                <p class="box-button"><a href="/predict/">Get Prediction ></a></p>
+            </div>
+
+
+        </div>
+    </main>
+    {%endblock%}
+
+
+

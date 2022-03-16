@@ -1,0 +1,32 @@
+
+
+/* Account Css */
+
+#accountmain {
+	color: white;
+	text-align: center;
+}
+
+form {
+	margin-top: 10%;
+}
+
+#accountmain form {
+	display: inline-block;
+}
+
+input {
+	padding:5px;
+  	border-radius:5px;
+}
+
+#accountmain ul {
+	flex-flow: column;
+}
+
+#accountmain ul li {
+	text-align: left;
+	list-style-type: circle;
+	list-style-position: outside;
+	width: 100%;
+}

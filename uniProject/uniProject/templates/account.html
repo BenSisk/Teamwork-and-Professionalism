@@ -1,0 +1,18 @@
+{%extends 'base.html'%}
+{% load static %}
+    {%block style %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+    {%endblock%}
+    {%block content%}
+
+    <main id="accountmain">
+        {% if added %}
+            <h1>Your password has been changed!</h1>
+         {% endif %}
+        <form method="post">
+          {% csrf_token %}
+          {{ form }}
+          <button type="submit">Save changes</button>
+        </form>
+    </main>
+    {%endblock%}
