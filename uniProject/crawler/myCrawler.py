@@ -18,8 +18,8 @@ TMP_FILE = "tmpPageResults.txt"
 
 getNewPage = False
 filteredResults = []
-searchURL = "https://serpapi.com/search.json?engine=google&q=###PRODUCT###&location=United%20Kingdom&google_domain=google.com&gl=us&hl=en&tbm=shop&ijn=100&api_key=###KEY###"
-
+searchURL = "https://serpapi.com/search.json?engine=google&q=###PRODUCT###&location=United+Kingdom&google_domain=google.co.uk&gl=uk&hl=en&tbm=shop&num=100&api_key=###KEY###"
+productString="timber+%28L%29+%28T%29+%28W%29"
 
 
 def update_url(url, searchString, API_KEY):
@@ -52,25 +52,27 @@ def extract_details(jsonFile):
 			data = json.load(jsonContent)
 
 		for key in data["shopping_results"]:
+#			dimensions = get_dimensions(key["title"])
+
 			resultList = [key["source"], key["title"], key["price"], key["delivery"], key["link"]]
 			filteredResults.append(resultList)
 
 
 		return filteredResults
 	else:
-		log("No json file found, fetching")
-		data = get_json_results("timber")
+		print("No json file found, fetching")
+		data = get_json_results(productString)
 		save_page(data)
 
 
+#def get_dimensions(title):
+
 # Don't waste all the API calls for now, only get a new page when specified
-if ( getNewPage ):
-	data = get_json_results("timber")
-
-	if save_page(data):
-		print("page saved successfully")
-
-else:
-	context = extract_details("data.json")
-
-
+#if ( getNewPage ):
+#	data = get_json_results("timber")
+#
+#	if save_page(data):
+#		print("page saved successfully")
+#
+#else:
+#	context = extract_details("data.json")
