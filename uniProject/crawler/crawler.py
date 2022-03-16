@@ -1,73 +1,76 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 Created on Mon Feb 21 10:23:52 2022
 
 @author: Anthony Donnelly
 """
-import urllib3 as r
+from urllib.request import urlopen
 import re as regex
-import subprocess
+import json
+from os.path import exists
 
-#SEARCH_URL = "https://duckduckgo.com/?q=###PRODUCT###&t=h_&iax=shopping&ia=shopping"
-SEARCH_URL = "https://www.google.co.uk/search?q=###PRODUCT###&tbm=shop&gl=gb&start=###page###"
-USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:65.0) Gecko/20100101 Firefox/65.0"
+# Static configuration... Will move to a configuration file
+API_KEY = "e7111edde16600bf382ad437fc4b268b077916880d6a569cf89738a117dc41ab"
+USER_AGENT = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36'}
 TMP_DIR = "/tmp/"
 TMP_FILE = "tmpPageResults.txt"
-PAGE_INCREMENT = 60
 
-def page_cleanup(filename):
-        # pointless doing this in python when tools exists to handle it already in
-        # one line of code
-	subprocess.call(["sed -i -e '/class=/d' {}".format(filename)], shell=True)
-	subprocess.call(["sed -i -e '/div/d' {}".format(filename)], shell=True)
-
-def get_page_results(searchString):
-	newString = ""
-	start_page = 0
-
-	# first 10 pages, 60 per page = 600
-	while start_page < 60:
-		url = SEARCH_URL.replace("###PRODUCT###", searchString)
-		url = url.replace("###PAGE###", str(start_page))
-
-		http = r.PoolManager()
-		page = http.request("GET", url)
-
-		page = (page.data).decode('latin-1')
-
-		for element in range(0, len(page)):
-			newString += page[element]
-			if page[element] == ">":
-				newString += "\n"
-
-		save_page(newString)
-
-		start_page += PAGE_INCREMENT
-
-def save_page(page):
-	## todo
-	## save all to one file
-	## check if file already exists
-	## remove file on cleanup
-        with open(TMP_FILE, 'a') as file:
-                file.write(page)
-
-        #page_cleanup(TMP_FILE)
+getNewPage = False
+filteredResults = []
+searchURL = "https://serpapi.com/search.json?engine=google&q=###PRODUCT###&location=United%20Kingdom&google_domain=google.com&gl=us&hl=en&tbm=shop&ijn=100&api_key=###KEY###"
 
 
-def extract_price(TMP_FILE):
-        print("Not done")
+
+def update_url(url, searchString, API_KEY):
+	url = url.replace("###PRODUCT###", searchString)
+	url = url.replace("###KEY###", API_KEY)
+
+	print(url)
+	return url
+
+def get_json_results(searchString):
+	url = update_url(searchURL, searchString, API_KEY)
+	response = urlopen(url)
+
+	buf = response.read()
+	dataJson = json.loads(buf.decode('utf-8'))
+
+	return dataJson
+
+def save_page(jsonData):
+	try:
+		with open('data.json', 'w', encoding='utf-8') as f:
+			json.dump(jsonData, f, ensure_ascii=False, indent=4)
+		return True
+	except OSError:
+		return False
+
+def extract_details(jsonFile):
+	if exists(jsonFile):
+		with open(jsonFile) as jsonContent:
+			data = json.load(jsonContent)
+
+		for key in data["shopping_results"]:
+			resultList = [key["source"], key["title"], key["price"], key["delivery"], key["link"]]
+			filteredResults.append(resultList)
 
 
-def extract_details():
-	file = open(TMP_FILE, 'r')
-	lines = file.readlines()
+		return filteredResults
+	else:
+		log("No json file found, fetching")
+		data = get_json_results("timber")
+		save_page(data)
 
-	for line in lines:
-		if line.startswith('£'):# and "span" in line:
-			print(line)
 
-get_page_results("timber")
+# Don't waste all the API calls for now, only get a new page when specified
+if ( getNewPage ):
+	data = get_json_results("timber")
 
-extract_details()
+	if save_page(data):
+		print("page saved successfully")
+
+else:
+	context = extract_details("data.json")
+
+
