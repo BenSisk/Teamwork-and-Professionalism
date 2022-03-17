@@ -59,13 +59,16 @@ def extract_details(jsonFile):
 
 			# get pack size
 
-
 			# filter out products that don't have the dimensions in the title to avoid headaches
 			if dimensions != False:
+				packSize = extract_pack_size(key["title"])
+
+				if packSize is not False:
+					dimensions.append(packSize)
+
 				print(dimensions)
 				resultList = [key["source"], key["title"], dimensions, key["price"], key["delivery"], key["link"]]
 				filteredResults.append(resultList)
-
 
 		return filteredResults
 	else:
@@ -73,6 +76,16 @@ def extract_details(jsonFile):
 		data = get_json_results(productString)
 		save_page(data)
 
+def extract_pack_size(title):
+	try:
+		results = regex.search("(?<=Pack of )[0-9]", title).group()
+	except:
+		packSize = False
+		pass
+	else:
+		packSize = int(regex.search("[0-9]", results).group())
+
+	return packSize
 
 def get_dimensions(title):
 	dimension = []
