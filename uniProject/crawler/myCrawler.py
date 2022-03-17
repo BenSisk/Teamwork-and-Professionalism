@@ -26,7 +26,6 @@ def update_url(url, searchString, API_KEY):
 	url = url.replace("###PRODUCT###", searchString)
 	url = url.replace("###KEY###", API_KEY)
 
-	print(url)
 	return url
 
 def get_json_results(searchString):
@@ -52,10 +51,16 @@ def extract_details(jsonFile):
 			data = json.load(jsonContent)
 
 		for key in data["shopping_results"]:
-#			dimensions = get_dimensions(key["title"])
+			dimensions = get_dimensions(key["title"])
 
-			resultList = [key["source"], key["title"], key["price"], key["delivery"], key["link"]]
-			filteredResults.append(resultList)
+			# get pack size
+
+
+			# filter out products that don't have the dimensions in the title to avoid headaches
+			if dimensions != False:
+				print(dimensions)
+				resultList = [key["source"], key["title"], dimensions, key["price"], key["delivery"], key["link"]]
+				filteredResults.append(resultList)
 
 
 		return filteredResults
@@ -65,14 +70,49 @@ def extract_details(jsonFile):
 		save_page(data)
 
 
-#def get_dimensions(title):
+def get_dimensions(title):
+	dimension = []
+	try:
+		dimension.append(regex.search("\(L\)[^\s]+", title).group())
+		dimension.append(regex.search("\(W\)[^\s]+", title).group())
+		dimension.append(regex.search("\(T\)[^\s]+", title).group())
+	except:
+		return False
+	else:
+		dimensions = strip_dimensions(dimension)
+		dimensions = convert_to_mm(dimensions)
+
+		return dimensions
+
+def strip_dimensions(dimensions):
+	newDimensions = [s.replace('(L)', '') for s in dimensions]
+	newDimensions = [s.replace('(W)', '') for s in newDimensions]
+	newDimensions = [s.replace('(T)', '') for s in newDimensions]
+	return newDimensions
+
+def convert_to_mm(dimensions):
+	for x, item in enumerate(dimensions):
+		try:
+			results = regex.search("[0-9][Mm](?:^|\s|$)", item).group()
+		except:
+			# no results, extract the digits
+			dimensions[x] = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
+			pass
+		else:
+			# extract dimensions which  contain a decimal place
+			size = regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group()
+			size = float(size) * 1000
+			dimensions[x] = size
+
+	return dimensions
 
 # Don't waste all the API calls for now, only get a new page when specified
-#if ( getNewPage ):
-#	data = get_json_results("timber")
-#
-#	if save_page(data):
-#		print("page saved successfully")
-#
-#else:
-#	context = extract_details("data.json")
+if ( getNewPage ):
+	data = get_json_results("timber")
+
+	if save_page(data):
+		print("page saved successfully")
+
+else:
+	context = extract_details("data.json")
+	print(context)
