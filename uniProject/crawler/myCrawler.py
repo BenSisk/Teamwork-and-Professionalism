@@ -9,9 +9,10 @@ from urllib.request import urlopen
 import re as regex
 import json
 from os.path import exists
+import base64
 
 # Static configuration... Will move to a configuration file
-API_KEY = "e7111edde16600bf382ad437fc4b268b077916880d6a569cf89738a117dc41ab"
+ENCODED_API_KEY="ZTcxMTFlZGRlMTY2MDBiZjM4MmFkNDM3ZmM0YjI2OGIwNzc5MTY4ODBkNmE1NjljZjg5NzM4YTExN2RjNDFhYg=="
 USER_AGENT = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36'}
 TMP_DIR = "/tmp/"
 TMP_FILE = "tmpPageResults.txt"
@@ -24,8 +25,11 @@ productString="timber+%28L%29+%28T%29+%28W%29"
 
 def update_url(url, searchString, API_KEY):
 	url = url.replace("###PRODUCT###", searchString)
-	url = url.replace("###KEY###", API_KEY)
 
+	# decode key
+	apiKey = base64.b64decode(ENCODED_API_KEY).decode('utf-8')
+
+	url = url.replace("###KEY###", apiKey)
 	return url
 
 def get_json_results(searchString):
