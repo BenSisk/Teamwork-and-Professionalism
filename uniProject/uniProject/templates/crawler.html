@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+	<main>
+		<div id="welcomeText">
+			<h1>Price Results</h1>
+			{% for result in results %}
+			<div id="results">
+				<p>Title:{{ result.1 }}</p>
+				<p>Price: {{result.2}}</p>
+				<p>Delivery: {{result.3}}</p>
+				<a href={{result.4}}}>Link</a>
+			</div>
+			{% endfor %}
+		</div>
+	</main>
+
+{% endblock %}
