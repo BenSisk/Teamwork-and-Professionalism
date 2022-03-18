@@ -22,7 +22,7 @@ getNewPage = False
 filteredResults = []
 searchURL = "https://serpapi.com/search.json?engine=google&q=###PRODUCT###&location=United+Kingdom&google_domain=google.co.uk&gl=uk&hl=en&tbm=shop&num=100&api_key=###KEY###"
 productString="timber+%28L%29+%28T%29+%28W%29"
-
+urlStrip = "https://www.google.co.uk/url?url="
 
 def update_url(url, searchString, API_KEY):
 	url = url.replace("###PRODUCT###", searchString)
@@ -74,11 +74,12 @@ def extract_details(jsonFile):
 				costPerVolume = Decimal(price) / Decimal(volume)
 
 				#print("price per cubic meter £" + str(round(costPerVolume, 2)))
-				resultList = [key["source"], key["title"], volume, key["price"], key["delivery"], key["link"], float(round(costPerVolume, 2))]
+				resultList = [key["source"], key["title"], volume, key["price"], key["delivery"], key["link"].replace(urlStrip,""), float(round(costPerVolume, 2))]
 				filteredResults.append(resultList)
 
 		sortedList = sorted(filteredResults, key=lambda x: x[6])
 		print([item[-1] for item in sortedList])
+		print(sortedList)
 		return sortedList
 	else:
 		print("No json file found, fetching")
