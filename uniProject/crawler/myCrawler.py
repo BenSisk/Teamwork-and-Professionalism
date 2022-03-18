@@ -49,6 +49,19 @@ def save_page(jsonData):
 		return True
 	except OSError:
 		return False
+def calculate_delivery_cost(provider, price):
+	if provider == "B&Q" and price < 50:
+		delivery = "5.00"
+	elif provider == "B&Q" and price >= 50:
+		delivery = "0.00"
+	elif provider == "Wickes" and price < 75:
+		delivery = "5.00"
+	elif provider == "Wickes" and price >= 75:
+		delivery = "0.00"
+	else:
+		delivery = "10.00"
+
+	return delivery
 
 def extract_details(jsonFile):
 	if exists(jsonFile):
@@ -68,18 +81,29 @@ def extract_details(jsonFile):
 					dimensions.append(packSize)
 
 				volume = calculate_volume(dimensions)
-
-				# divide the volume by the price
 				price = float(key["price"].strip("£"))
+
+				if "delivery" not in key["delivery"]:
+					delivery = calculate_delivery_cost(key["source"],price) 
+				else:
+					try:
+						delivery = str(regex.search("(?<=£)(.*)(?=\sdelivery)", key["delivery"]).group())
+					except:
+						if "Free" in key["delivery"]:
+							delivery = "0.00"
+						else:
+							delivery = key["delivery"]
+
+				# calculate the price per cubic meter including delivery
+				price = price + float(delivery)
 				costPerVolume = Decimal(price) / Decimal(volume)
 
-				#print("price per cubic meter £" + str(round(costPerVolume, 2)))
-				resultList = [key["source"], key["title"], volume, key["price"], key["delivery"], key["link"].replace(urlStrip,""), float(round(costPerVolume, 2))]
+				resultList = [key["source"], key["title"], volume, key["price"], delivery, key["link"].replace(urlStrip,""), float(round(costPerVolume, 2))]
 				filteredResults.append(resultList)
 
 		sortedList = sorted(filteredResults, key=lambda x: x[6])
 		print([item[-1] for item in sortedList])
-		print(sortedList)
+#		print(sortedList)
 		return sortedList
 	else:
 		print("No json file found, fetching")
