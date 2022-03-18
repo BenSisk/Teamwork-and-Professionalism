@@ -10,6 +10,7 @@ import re as regex
 import json
 from os.path import exists
 import base64
+from decimal import *
 
 # Static configuration... Will move to a configuration file
 ENCODED_API_KEY="ZTcxMTFlZGRlMTY2MDBiZjM4MmFkNDM3ZmM0YjI2OGIwNzc5MTY4ODBkNmE1NjljZjg5NzM4YTExN2RjNDFhYg=="
@@ -66,11 +67,19 @@ def extract_details(jsonFile):
 				if packSize is not False:
 					dimensions.append(packSize)
 
-				print(dimensions)
-				resultList = [key["source"], key["title"], dimensions, key["price"], key["delivery"], key["link"]]
+				volume = calculate_volume(dimensions)
+
+				# divide the volume by the price
+				price = float(key["price"].strip("£"))
+				costPerVolume = Decimal(price) / Decimal(volume)
+
+				#print("price per cubic meter £" + str(round(costPerVolume, 2)))
+				resultList = [key["source"], key["title"], volume, key["price"], key["delivery"], key["link"], float(round(costPerVolume, 2))]
 				filteredResults.append(resultList)
 
-		return filteredResults
+		sortedList = sorted(filteredResults, key=lambda x: x[6])
+		print([item[-1] for item in sortedList])
+		return sortedList
 	else:
 		print("No json file found, fetching")
 		data = get_json_results(productString)
@@ -117,11 +126,20 @@ def convert_to_mm(dimensions):
 			pass
 		else:
 			# extract dimensions which  contain a decimal place
-			size = regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group()
-			size = float(size) * 1000
+			size = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
 			dimensions[x] = size
 
 	return dimensions
+
+def calculate_volume(dimensions):
+	volume = (dimensions[0] / 1000 ) * ( dimensions[1] / 1000 )* (dimensions[2] / 1000)
+
+	# see if we have a pack size
+	if len(dimensions) == 4:
+		volume * dimensions[-1]
+
+	# convert to meters from m to get m^3
+	return (volume)
 
 # Don't waste all the API calls for now, only get a new page when specified
 if ( getNewPage ):
@@ -132,4 +150,4 @@ if ( getNewPage ):
 
 else:
 	context = extract_details("data.json")
-	print(context)
+#	print(context)
