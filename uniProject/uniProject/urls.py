@@ -22,5 +22,6 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 urlpatterns = [
     path('', include('adminSection.urls')),
     path('', include('crawler.urls')),
+    path('', include('pricePrediction.urls')),
     path("favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
