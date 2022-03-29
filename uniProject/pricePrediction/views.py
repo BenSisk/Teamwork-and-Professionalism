@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 # returns the predicted value from azure for the given material and date (m-Y)
-def queryAzure(date, material):
+def queryAzure(date, material, model):
 	data = {
 		"Inputs": {
 			"data":
@@ -33,10 +33,11 @@ def queryAzure(date, material):
 	body = str.encode(json.dumps(data))
 
 	# Static IP of the Azure Endpoints
-	url = "http://20.108.92.23:80/api/v1/service/" + material + "-votingensemble/score"
+	endpoint = material + "-" + model
+	url = "http://" + ipaddress[model] + ":80/api/v1/service/" + endpoint + "/score"
 
 	# API keys are read from a dictionary in a separate python file named apikeys
-	api_key = apikeys[material] # Replace this with the API key for the web service
+	api_key = apikeys[endpoint] # Replace this with the API key for the web service
 	
 	headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key)}
 
@@ -57,7 +58,7 @@ def queryAzure(date, material):
 
 	return result
 
-def getGraph(data, timeframe, material):
+def getGraph(data, timeframe, material, model):
 	register_matplotlib_converters()
 	timeSplit = timeframe.split("-")
 	newDate = timeSplit[1] + "/" + timeSplit[0]
@@ -66,7 +67,7 @@ def getGraph(data, timeframe, material):
 
 	# if query fails and triggers the except block, failedQuery is true and the graph is not plotted
 	failedQuery = False
-	next = queryAzure(timeframe, material)
+	next = queryAzure(timeframe, material, model)
 	if (next == -1):
 		failedQuery = True
 
@@ -108,10 +109,12 @@ def prediction(request):
 		if form.is_valid():
 			material = form.clean_material_data()
 			dateTimeframe = form.clean_date_data()
+			model = form.clean_model_data()
 	else:
 		# default if no POST request
 		material = "plywood"
 		dateTimeframe = 1
+		model = "votingensemble"
 
 	currentYear = dt.now().year
 	currentMonth = dt.now().month + dateTimeframe
@@ -126,7 +129,7 @@ def prediction(request):
 	dataset_test = pd.read_csv(material + ".csv")
 
 	# get image of the matplotlib graph to be displayed
-	uri = getGraph(dataset_test, date, material)
+	uri = getGraph(dataset_test, date, material, model)
 
 	# direct to prediction template, with the  matplotlib graph image
 	# and entry form parameters for submitting data (material type and prediction timeframe)

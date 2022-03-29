@@ -4,11 +4,17 @@ from django.utils.translation import gettext_lazy as _
 
 #dataset to verify data later
 MATERIALS = ["plywood", "steel"]
+MODELS = ["votingensemble", "elasticnet"]
 
 #array of tuples to create the materials web form dropdown list
 MATERIAL_CHOICES= [
     ('plywood', 'Plywood'),
     ('steel', 'Steel'),
+    ]
+
+MODEL_CHOICES= [
+    ('votingensemble', 'Voting-Ensemble'),
+    ('elasticnet', 'Elastic-Net'),
     ]
 
 #array of tuples to create the timeframe web form dropdown list
@@ -26,6 +32,8 @@ TIME_CHOICES= [
 class pricePredictionForm(forms.Form):
     #material dropdown box
     material = forms.CharField(label="Select Material", widget=forms.Select(choices=MATERIAL_CHOICES))
+    #model dropdown box
+    model = forms.CharField(label="Select Model Architecture", widget=forms.Select(choices=MODEL_CHOICES))
     #timeframe dropdown box
     date = forms.CharField(label="Select Timeframe", widget=forms.Select(choices=TIME_CHOICES))
 
@@ -37,7 +45,16 @@ class pricePredictionForm(forms.Form):
             raise ValidationError(_('Invalid Material - %(material)s is not in the material list'), params={"material" : data}, code="invalid")
 
         return data
-    
+
+    #model data cleansing function
+    def clean_model_data(self):
+        data = self.cleaned_data["model"]
+
+        if (data not in MODELS):
+            raise ValidationError(_('Invalid Material - %(material)s is not in the material list'), params={"material" : data}, code="invalid")
+
+        return data
+
     #timeframe data cleansing function
     def clean_date_data(self):
         data = self.cleaned_data["date"]
