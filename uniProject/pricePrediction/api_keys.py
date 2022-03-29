@@ -4,3 +4,8 @@ apikeys = {
   "steel-elasticnet" : "API_KEY",
   "plywood-elasticnet" : "API_KEY"
 }
+
+ipaddress = {
+    "votingensemble" : "IP",
+    "elasticnet" : "IP"
+}
