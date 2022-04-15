@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+	<main>
+		<form method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<input type="submit" value="Submit">
+		</form>
+		<br>
+		<img src="data:image/png;base64,{{ data }}" alt="" height="600", width="900">
+	</main>
+
+{% endblock %}
