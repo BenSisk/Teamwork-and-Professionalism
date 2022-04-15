@@ -34,7 +34,7 @@ def update_url(url, searchString, API_KEY):
 	return url
 
 def get_json_results(searchString):
-	url = update_url(searchURL, searchString, API_KEY)
+	url = update_url(searchURL, searchString, ENCODED_API_KEY)
 	response = urlopen(url)
 
 	buf = response.read()

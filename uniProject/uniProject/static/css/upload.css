@@ -1,0 +1,75 @@
+
+/* Upload Css */
+
+#maingridContainer {
+	display: grid;
+	grid-template-areas:
+			'blank form upload ';
+	grid-template-columns: 40% 20% 40%;
+	grid-gap: 1em;
+  	padding: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#maingridContainer p {
+	font-size: 1em;
+}
+
+#uploadform{
+	grid-area: form;
+}
+
+#currentuploads {
+	grid-area: upload;
+	display: none;
+}
+
+#currentuploads p{
+	border: 2px solid #4D88F0;
+	margin: 0;
+	padding-bottom: 1em;
+}
+
+#currentuploads ul {
+	display: block;
+	flex-flow: row;
+	flex-direction: column;
+	margin: 0;
+	padding: 0;
+	background-color: #303856;
+	border: 2px solid #4D88F0;
+}
+#currentuploads ul li a {
+	color: white;
+}
+
+
+h1 {
+	text-align: center;
+	padding: 10px;
+	color: white;
+}
+
+#message {
+	margin: 0;
+}
+
+#titlebox input {
+	width: 100%;
+	padding:10px;
+  border:0;
+  box-shadow: 0 12px 20px 0 rgba(0,0,0,0.4);
+}
+
+#descbox textarea {
+	width: 100%;
+	padding:10px;
+  border:0;
+  box-shadow: 0 12px 20px 0 rgba(0,0,0,0.4);
+}
+
+#submitbox input {
+	width: 40%;
+	  padding:10px;
+  border-radius:10px;
+}
