@@ -21,7 +21,7 @@ TMP_FILE = "tmpPageResults.txt"
 getNewPage = False
 filteredResults = []
 searchURL = "https://serpapi.com/search.json?engine=google&q=###PRODUCT###&location=United+Kingdom&google_domain=google.co.uk&gl=uk&hl=en&tbm=shop&num=100&api_key=###KEY###"
-productString="timber+%28L%29+%28T%29+%28W%29"
+productString="+%28L%29+%28T%29+%28W%29"
 urlStrip = "https://www.google.co.uk/url?url="
 
 def update_url(url, searchString, API_KEY):
@@ -49,6 +49,7 @@ def save_page(jsonData):
 		return True
 	except OSError:
 		return False
+
 def calculate_delivery_cost(provider, price):
 	if provider == "B&Q" and price < 50:
 		delivery = "5.00"
@@ -84,7 +85,7 @@ def extract_details(jsonFile):
 				price = float(key["price"].strip("£"))
 
 				if "delivery" not in key["delivery"]:
-					delivery = calculate_delivery_cost(key["source"],price) 
+					delivery = calculate_delivery_cost(key["source"],price)
 				else:
 					try:
 						delivery = str(regex.search("(?<=£)(.*)(?=\sdelivery)", key["delivery"]).group())
@@ -103,7 +104,6 @@ def extract_details(jsonFile):
 
 		sortedList = sorted(filteredResults, key=lambda x: x[6])
 		print([item[-1] for item in sortedList])
-#		print(sortedList)
 		return sortedList
 	else:
 		print("No json file found, fetching")
@@ -167,12 +167,16 @@ def calculate_volume(dimensions):
 	return (volume)
 
 # Don't waste all the API calls for now, only get a new page when specified
-if ( getNewPage ):
-	data = get_json_results("timber")
 
-	if save_page(data):
-		print("page saved successfully")
+def startCrawler(getNewPage, searchString):
+	if ( getNewPage ):
+		data = get_json_results(searchString)
 
-else:
-	context = extract_details("data.json")
-#	print(context)
+		if save_page(data):
+			print("page saved successfully")
+
+
+	results = extract_details("data.json")
+
+
+	return results
