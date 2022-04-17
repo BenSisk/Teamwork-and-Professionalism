@@ -67,7 +67,10 @@ def getGraph(data, timeframe, material, model):
 
 	# if query fails and triggers the except block, failedQuery is true and the graph is not plotted
 	failedQuery = False
-	next = queryAzure(timeframe, material, model)
+
+	# next = queryAzure(timeframe, material, model)
+	next = 120
+	
 	if (next == -1):
 		failedQuery = True
 
