@@ -13,6 +13,10 @@ class SearchCriteria(forms.Form):
 
 	def modify_search_query(self):
 		data = self.cleaned_data['searchTerm']
+
+		# replace spaces with url encode
+
+		data = data.replace(" ", "%20")
 		# add in dimensions into  search
 		searchString = data + "+%28L%29+%28T%29+%28W%29"
 

@@ -29,6 +29,7 @@ def crawler_view(request):
         form = SearchCriteria(initial={'searchTerm': searchString})
 
         context = {
+            'forms': True,
             'form': form,
         }
 
