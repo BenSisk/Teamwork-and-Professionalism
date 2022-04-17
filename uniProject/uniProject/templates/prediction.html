@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/prediction.css' %}">
 	<main>
+		<h1>Price Prediction</h1>
 		<form method="post">
 			{% csrf_token %}
 			{{ form.as_p }}
-			<input type="submit" value="Submit">
+			<input id="submitbox" type="submit" value="Submit">
 		</form>
-		<br>
-		<img src="data:image/png;base64,{{ data }}" alt="" height="600", width="900">
+		<img id="graph" src="data:image/png;base64,{{ data }}" alt="">
 	</main>
 
 {% endblock %}
