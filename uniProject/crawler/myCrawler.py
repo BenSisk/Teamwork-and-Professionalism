@@ -9,6 +9,7 @@ from urllib.request import urlopen
 import re as regex
 import json
 from os.path import exists
+from os import remove
 import base64
 from decimal import *
 
@@ -19,10 +20,9 @@ TMP_DIR = "/tmp/"
 TMP_FILE = "tmpPageResults.txt"
 
 getNewPage = False
-filteredResults = []
 searchURL = "https://serpapi.com/search.json?engine=google&q=###PRODUCT###&location=United+Kingdom&google_domain=google.co.uk&gl=uk&hl=en&tbm=shop&num=100&api_key=###KEY###"
-productString="timber+%28L%29+%28T%29+%28W%29"
-urlStrip = "https://www.google.co.uk/url?url="
+productString="+%28L%29+%28T%29+%28W%29"
+urlStrip = "https://"
 
 def update_url(url, searchString, API_KEY):
 	url = url.replace("###PRODUCT###", searchString)
@@ -44,11 +44,16 @@ def get_json_results(searchString):
 
 def save_page(jsonData):
 	try:
-		with open('data.json', 'w', encoding='utf-8') as f:
+		if exists("data/data.json"):
+			 remove("data/data.json")
+
+		with open('data/data.json', 'w', encoding='utf-8') as f:
 			json.dump(jsonData, f, ensure_ascii=False, indent=4)
 		return True
+
 	except OSError:
 		return False
+
 def calculate_delivery_cost(provider, price):
 	if provider == "B&Q" and price < 50:
 		delivery = "5.00"
@@ -59,12 +64,13 @@ def calculate_delivery_cost(provider, price):
 	elif provider == "Wickes" and price >= 75:
 		delivery = "0.00"
 	else:
-		delivery = "10.00"
+		delivery = "Collection Only"
 
 	return delivery
 
 def extract_details(jsonFile):
 	if exists(jsonFile):
+		filteredResults = []
 		with open(jsonFile) as jsonContent:
 			data = json.load(jsonContent)
 
@@ -84,7 +90,7 @@ def extract_details(jsonFile):
 				price = float(key["price"].strip("£"))
 
 				if "delivery" not in key["delivery"]:
-					delivery = calculate_delivery_cost(key["source"],price) 
+					delivery = calculate_delivery_cost(key["source"],price)
 				else:
 					try:
 						delivery = str(regex.search("(?<=£)(.*)(?=\sdelivery)", key["delivery"]).group())
@@ -95,15 +101,24 @@ def extract_details(jsonFile):
 							delivery = key["delivery"]
 
 				# calculate the price per cubic meter including delivery
-				price = price + float(delivery)
-				costPerVolume = Decimal(price) / Decimal(volume)
+				try :
+					price = price + float(delivery)
+					delivery = "£" + delivery
+				except ValueError:
+					# no delivery cost
+					pass
 
-				resultList = [key["source"], key["title"], volume, key["price"], delivery, key["link"].replace(urlStrip,""), float(round(costPerVolume, 2))]
+				if len(dimensions) == 4:
+					costPerVolume = (Decimal(price) / dimensions[-1]) / Decimal(volume)
+				else:
+					costPerVolume = Decimal(price) / Decimal(volume)
+
+				#key["link"].replace(urlStrip,"")
+				resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"], '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
 				filteredResults.append(resultList)
 
 		sortedList = sorted(filteredResults, key=lambda x: x[6])
-		print([item[-1] for item in sortedList])
-#		print(sortedList)
+
 		return sortedList
 	else:
 		print("No json file found, fetching")
@@ -152,27 +167,32 @@ def convert_to_mm(dimensions):
 		else:
 			# extract dimensions which  contain a decimal place
 			size = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
-			dimensions[x] = size
+			# convert to mm
+			dimensions[x] = size * 1000
 
 	return dimensions
 
 def calculate_volume(dimensions):
-	volume = (dimensions[0] / 1000 ) * ( dimensions[1] / 1000 )* (dimensions[2] / 1000)
+	print(dimensions)
+	# convert to mm to inches
+	volume = (dimensions[0] / 25.4 ) * ( dimensions[1] / 25.4 )* (dimensions[2] / 25.4)
 
 	# see if we have a pack size
-	if len(dimensions) == 4:
-		volume * dimensions[-1]
+#	if len(dimensions) == 4:
+#		volume * dimensions[-1]
 
-	# convert to meters from m to get m^3
 	return (volume)
 
 # Don't waste all the API calls for now, only get a new page when specified
-if ( getNewPage ):
-	data = get_json_results("timber")
+def startCrawler(getNewPage, searchString):
+	if ( getNewPage ):
+		data = get_json_results(searchString)
 
-	if save_page(data):
-		print("page saved successfully")
+		if save_page(data):
+			print("page saved successfully")
 
-else:
-	context = extract_details("data.json")
-#	print(context)
+
+	results = extract_details("data/data.json")
+
+
+	return results
