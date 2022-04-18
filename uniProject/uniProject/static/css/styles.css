@@ -111,15 +111,9 @@ p {
 }
 
 #indexButtons {
-  display: flex;
-  gap: 10px;
-}
-
-#contactButton {
-        border-radius: 15px;
-        background: #4D88F0;
-        padding: 10px;
-	color: white;
+	display: flex;
+	gap: 1px;
+	white-space: nowrap;
 }
 
 footer {
@@ -142,6 +136,9 @@ footer {
 	display: flex;
 	flex-flow: row;
 }
+h1 {
+	color: #4D88F0;
+}
 
 #resultsContainer {
 	display: flex;
@@ -161,4 +158,32 @@ footer {
 	border-radius: 8px;
 	width: 150px;
 	height: 150px;
+}
+
+#indexButtons ul {
+       list-style: none;
+       font-size: 24px;
+       padding: 0;
+}
+
+#indexButtons ul li{
+       margin: 2px;
+       width: 50%;
+       border-radius: 15px;
+       padding: 10px;
+       border: 2px solid #4D88F0;
+       text-align: center;
+}
+
+
+#ContactButton a{
+       color: #FFFFFF;
+}
+
+#learnButton a{
+       color: #FFFFFF;
+}
+
+#indexButtons ul li:hover{
+       background: #4D88F0;
 }
