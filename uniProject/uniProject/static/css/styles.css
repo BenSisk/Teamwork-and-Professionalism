@@ -104,7 +104,7 @@ h3 {
 	color: white;
 }
 
-p {
+p, label {
 	display: block;
 	font-size: 1.5em;
 	color: #FFFFFF;
@@ -136,7 +136,7 @@ footer {
 	display: flex;
 	flex-flow: row;
 }
-h1 {
+h1, h2 {
 	color: #4D88F0;
 }
 
@@ -186,4 +186,14 @@ h1 {
 
 #indexButtons ul li:hover{
        background: #4D88F0;
+}
+
+main > form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	left: 50%;
+	top: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
 }
