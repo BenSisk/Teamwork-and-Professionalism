@@ -129,7 +129,7 @@ def prediction(request):
 	date = str(currentYear) + "-" + str(currentMonth)
 
 	# read corresponding previous data to be displayed
-	dataset_test = pd.read_csv(material + ".csv")
+	dataset_test = pd.read_csv("data/" + material + ".csv")
 
 	# get image of the matplotlib graph to be displayed
 	uri = getGraph(dataset_test, date, material, model)

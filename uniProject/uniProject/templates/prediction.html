@@ -4,12 +4,15 @@
 <link rel="stylesheet" href="{% static 'css/prediction.css' %}">
 	<main>
 		<h1>Price Prediction</h1>
-		<form method="post">
-			{% csrf_token %}
-			{{ form.as_p }}
-			<input id="submitbox" type="submit" value="Submit">
-		</form>
-		<img id="graph" src="data:image/png;base64,{{ data }}" alt="">
+		<div id="flex">
+			<form method="post">
+				{% csrf_token %}
+				{{ form }}
+				<br><br>
+				<input id="submitbox" type="submit" value="Submit">
+			</form>
+			<img id="graph" src="data:image/png;base64,{{ data }}" alt="">
+		</div>
 	</main>
 
 {% endblock %}
