@@ -3,5 +3,5 @@ from . import views
 
 
 urlpatterns = [
- path('crawler/', views.crawler_view, name='crawler'),
+ path('search/', views.crawler_view, name='crawler'),
 ]

@@ -1,0 +1,49 @@
+{%extends 'base.html'%}
+{% load static %}
+    {%block style %}
+    <link rel="stylesheet" href="{% static 'css/upload.css' %}">
+    {%endblock%}
+    {%block content%}
+    <main>
+    <h1>Upload New Product</h1>
+    <div id="maingridContainer">
+
+
+
+    <!-- List of uploaded documents -->
+	 <div id="currentuploads">
+        {% if documents %}
+            <p>All documents in the database:</p>
+            <ul>
+                {% for document in documents %}
+                    <li><a href="{{ document.docfile.url }}">{{ document.docfile.name }}</a></li>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+            <p>No documents.</p>
+        {% endif %}
+        </div>
+
+        <!-- Upload form. Note enctype attribute! -->
+        <div id="uploadform">
+            <form action="{% url "upload" %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <p id="message">{{ message }}</p>
+                <p>{{ form.non_field_errors }}</p>
+                <p>{{ form.title.label_tag }} {{ form.title.help_text }}</p>
+                <p id="titlebox"> {{form.title}} </p>
+                <p>{{ form.desc.label_tag }} {{ form.desc.help_text }}</p>
+                <p id="descbox"> {{ form.desc }} </p>
+                <p>.jpg .jpeg .tif .png files only.</p>
+                <p id="imagebox">{{ form.docfile.label_tag }} {{ form.docfile }} {{ form.docfile.help_text }}
+                 {{ form.docfile.errors }}</p>
+                <p id="submitbox"><input type="submit" value="Upload"/></p>
+            </form>
+        </div>
+    </div>
+    </main>
+    {%endblock%}
+
+
+
