@@ -21,6 +21,11 @@ ul {
 	list-style-type: none;
 }
 
+
+#navigationBar ul li:hover{
+       background: #4D88F0;
+}
+
 #navigationBar li {
 	margin-right: 20px;
 	font-size: 24px;
@@ -36,10 +41,10 @@ ul {
 
 #navigationBar li:last-child {
 	border-radius: 15px;
-	background: #4D88F0;
 	right:75px;
 	position: absolute;
 	padding: 10px;
+	border: 1px solid #FA921C;
 }
 
 #navigationBar li:first-child {
@@ -137,7 +142,7 @@ footer {
 	flex-flow: row;
 }
 h1, h2 {
-	color: #4D88F0;
+	color: #FA921C;
 }
 
 #resultsContainer {
@@ -171,7 +176,7 @@ h1, h2 {
        width: 50%;
        border-radius: 15px;
        padding: 10px;
-       border: 2px solid #4D88F0;
+       border: 1px solid #FA921C;
        text-align: center;
 }
 

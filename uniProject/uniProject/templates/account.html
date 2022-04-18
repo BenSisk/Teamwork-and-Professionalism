@@ -6,8 +6,9 @@
     {%block content%}
 
     <main id="accountmain">
+	<h1>Account Password Change</h1>
         {% if added %}
-            <h1>Your password has been changed!</h1>
+            <h2>Your password has been changed!</h2>
          {% endif %}
         <form method="post">
           {% csrf_token %}
