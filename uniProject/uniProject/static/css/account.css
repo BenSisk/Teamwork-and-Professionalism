@@ -7,13 +7,13 @@
 	text-align: center;
 }
 
-form {
+/*#form {
 	margin-top: 10%;
-}
+}*/
 
-#accountmain form {
+/*#accountmain form {
 	display: inline-block;
-}
+}*/
 
 input {
 	padding:5px;
@@ -22,11 +22,26 @@ input {
 
 #accountmain ul {
 	flex-flow: column;
+	justify-content: center;
 }
 
-#accountmain ul li {
+#accountmain ul li{
 	text-align: left;
 	list-style-type: circle;
 	list-style-position: outside;
-	width: 100%;
+}
+
+#accountmain button {
+	margin: 2px;
+	width: 50%;
+	border-radius: 15px;
+	border: 1px solid #FA921C;
+	padding: 10px;
+	background: None;
+	color: white;
+	margin-left: 25%;
+}
+
+#accountmain button:hover {
+	background: #4D88F0;
 }
