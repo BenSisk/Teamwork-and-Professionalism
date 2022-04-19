@@ -202,3 +202,10 @@ main > form {
 	position: absolute;
 	transform: translate(-50%, -50%);
 }
+
+#searchForm > * {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+

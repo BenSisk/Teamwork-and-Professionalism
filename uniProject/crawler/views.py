@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from . import myCrawler
 from .forms import SearchCriteria
 
+
 # Create your views here.
 
 def crawler_view(request):
@@ -23,10 +24,10 @@ def crawler_view(request):
             results = myCrawler.startCrawler(newPage, numResults, searchString, volume)
 
             context = {
-               'forms': True,
-               'form': form,
-               'results': results,
-               'volume': volume,
+                'forms': True,
+                'form': form,
+                'results': results,
+                'volume': volume,
             }
 
     # If this is a GET (or any other method) create the default form.
