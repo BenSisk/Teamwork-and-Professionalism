@@ -17,6 +17,9 @@ form {
     padding-left: 5%;
     padding-right: 5%;
     padding-top: 5%;
+}
+
+p {
     font-size: 1.2em;
 }
 
@@ -58,7 +61,6 @@ footer {
     }
     select {
         width: 90%;
-        font-size: 1.2em;
     }
     #graph {
         width: 100%;

@@ -7,8 +7,7 @@
 		<div id="flex">
 			<form method="post">
 				{% csrf_token %}
-				{{ form }}
-				<br><br>
+				{{ form.as_p }}
 				<input id="submitbox" type="submit" value="Submit">
 			</form>
 			<img id="graph" src="data:image/png;base64,{{ data }}" alt="">

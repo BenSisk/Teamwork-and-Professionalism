@@ -8,9 +8,7 @@
 				<div id="searchForm">
 					<form action="" method="post">
 						{% csrf_token %}
-						<table>
-							{{ form.as_table }}
-						</table>
+						{{form}}
 						<input type="submit" value="Submit">
 					</form>
 				</div>
@@ -25,7 +23,9 @@
 						<p>Title:{{ result.1 }}</p>
 						<p>Price: {{result.3}}</p>
 						<p>Delivery: {{result.4}}</p>
-						<p>Cost per cubic inch: &pound{{result.6}}</p>
+						{% if volume %}
+							<p>Cost per cubic inch: &pound{{result.6}}</p>
+						{% endif %}
 						<a href={{result.5}}}>Buy</a>
 					</div>
 				{% endfor %}

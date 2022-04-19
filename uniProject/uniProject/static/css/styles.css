@@ -133,7 +133,7 @@ footer {
 #results {
 	display: flex;
 	flex-wrap: wrap;
-	flex-direction: row wrap;
+	flex-direction: row;
 	gap: 12px;
 }
 
@@ -201,4 +201,14 @@ main > form {
 	top: 50%;
 	position: absolute;
 	transform: translate(-50%, -50%);
+}
+
+#searchForm > * {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
+#logo {
+	height: 75%;
 }
