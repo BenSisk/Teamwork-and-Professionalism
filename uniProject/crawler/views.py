@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from . import myCrawler
 from .forms import SearchCriteria
 
+
 # Create your views here.
 
 def crawler_view(request):
@@ -16,13 +17,17 @@ def crawler_view(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
             searchString = form.modify_search_query()
+            newPage = form.get_new_page()
+            numResults = form.get_results()
+            volume = form.get_volume()
 
-            results = myCrawler.startCrawler(False, searchString)
+            results = myCrawler.startCrawler(newPage, numResults, searchString, volume)
 
             context = {
-               'forms': True,
-               'form': form,
-               'results': results
+                'forms': True,
+                'form': form,
+                'results': results,
+                'volume': volume,
             }
 
     # If this is a GET (or any other method) create the default form.
