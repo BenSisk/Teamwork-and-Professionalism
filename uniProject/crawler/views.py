@@ -16,8 +16,9 @@ def crawler_view(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
             searchString = form.modify_search_query()
+            newPage = form.get_new_page()
 
-            results = myCrawler.startCrawler(False, searchString)
+            results = myCrawler.startCrawler(newPage, searchString)
 
             context = {
                'forms': True,

@@ -1,8 +1,8 @@
 from django import forms
 
 NEW_PAGE = [
-    ('Yes', True),
-    ('No', False),
+    (True, "Yes"),
+    (False, "No"),
     ]
 
 class SearchCriteria(forms.Form):
@@ -21,3 +21,20 @@ class SearchCriteria(forms.Form):
 		searchString = data + "+%28L%29+%28T%29+%28W%29"
 
 		return searchString
+
+	def get_new_page(self):
+		data = self.string_to_bool(self.cleaned_data['newPage'])
+
+		print(data)
+		# no is boolean?
+		if type(data) == type(True):
+			return data
+		else:
+			return False
+
+
+	def string_to_bool(self, data):
+		if data == "True":
+			return True
+		else:
+			return False
