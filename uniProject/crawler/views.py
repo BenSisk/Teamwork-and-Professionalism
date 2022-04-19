@@ -17,13 +17,16 @@ def crawler_view(request):
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
             searchString = form.modify_search_query()
             newPage = form.get_new_page()
+            numResults = form.get_results()
+            volume = form.get_volume()
 
-            results = myCrawler.startCrawler(newPage, searchString)
+            results = myCrawler.startCrawler(newPage, numResults, searchString, volume)
 
             context = {
                'forms': True,
                'form': form,
-               'results': results
+               'results': results,
+               'volume': volume,
             }
 
     # If this is a GET (or any other method) create the default form.

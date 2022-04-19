@@ -68,19 +68,37 @@ def calculate_delivery_cost(provider, price):
 
 	return delivery
 
-def extract_details(jsonFile):
+# Work out delivery costs, very limited check at the minute
+def get_delivery(key, price):
+	if "delivery" not in key["delivery"]:
+		delivery = calculate_delivery_cost(key["source"],price)
+	else:
+		try:
+			delivery = str(regex.search("(?<=£)(.*)(?=\sdelivery)", key["delivery"]).group())
+		except:
+			if "Free" in key["delivery"]:
+				delivery = "0.00"
+			else:
+				delivery = key["delivery"]
+
+	return delivery
+
+def extract_details(jsonFile, calcVolume):
 	if exists(jsonFile):
 		filteredResults = []
+		dimensions = False
+
 		with open(jsonFile) as jsonContent:
 			data = json.load(jsonContent)
 
 		for key in data["shopping_results"]:
-			dimensions = get_dimensions(key["title"])
+			if calcVolume:
+				dimensions = get_dimensions(key["title"])
 
 			# get pack size
 
 			# filter out products that don't have the dimensions in the title to avoid headaches
-			if dimensions != False:
+			if dimensions != False and calcVolume:
 				packSize = extract_pack_size(key["title"])
 
 				if packSize is not False:
@@ -89,16 +107,7 @@ def extract_details(jsonFile):
 				volume = calculate_volume(dimensions)
 				price = float(key["price"].strip("£"))
 
-				if "delivery" not in key["delivery"]:
-					delivery = calculate_delivery_cost(key["source"],price)
-				else:
-					try:
-						delivery = str(regex.search("(?<=£)(.*)(?=\sdelivery)", key["delivery"]).group())
-					except:
-						if "Free" in key["delivery"]:
-							delivery = "0.00"
-						else:
-							delivery = key["delivery"]
+				delivery = get_delivery(key, price)
 
 				# calculate the price per cubic meter including delivery
 				try :
@@ -116,8 +125,20 @@ def extract_details(jsonFile):
 				#key["link"].replace(urlStrip,"")
 				resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"], '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
 				filteredResults.append(resultList)
+			elif not calcVolume:
+				volume = "0"
+				price = key["price"].strip("£")
+				price = float(price.replace(',',''))
+				delivery = get_delivery(key, price)
+				resultList = [key["thumbnail"], key["title"],  volume, key["price"], delivery, key["link"]]
+				filteredResults.append(resultList)
 
-		sortedList = sorted(filteredResults, key=lambda x: x[6])
+		if calcVolume:
+			# sort on volume
+			sortedList = sorted(filteredResults, key=lambda x: x[6])
+		else:
+			# sort on price
+			sortedList = sorted(filteredResults, key=lambda x: x[3])
 
 		return sortedList
 	else:
@@ -184,15 +205,22 @@ def calculate_volume(dimensions):
 	return (volume)
 
 # Don't waste all the API calls for now, only get a new page when specified
-def startCrawler(getNewPage, searchString):
+def startCrawler(getNewPage, numResults, searchString, volume):
 	if ( getNewPage ):
+		if volume:
+			searchString = searchString + "+%28L%29+%28T%29+%28W%29"
+
 		data = get_json_results(searchString)
 
 		if save_page(data):
 			print("page saved successfully")
 
 
-	results = extract_details("data/data.json")
+	results = extract_details("data/data.json", volume)
 
 
-	return results
+	# ensure we don't go out of bounds
+	if numResults > len(results):
+		return results
+	else:
+		return results[:numResults]
