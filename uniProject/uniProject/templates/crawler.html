@@ -6,10 +6,10 @@
 			<h1> Price Search </h1>
 			{% if forms %}
 				<div id="searchForm">
-					<form action="" method="post">
+					<form method="post">
 						{% csrf_token %}
 						{{form.as_p}}
-						<input type="submit" value="Submit">
+						<input id="submitInput" type="submit" value="Submit">
 					</form>
 				</div>
 			{% endif %}
