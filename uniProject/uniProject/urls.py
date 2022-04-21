@@ -18,10 +18,13 @@ from django.conf import settings
 from django.urls import include, path
 from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
     path('', include('adminSection.urls')),
     path('', include('crawler.urls')),
     path('', include('pricePrediction.urls')),
     path("favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),),
+    path('contact/', TemplateView.as_view(template_name='contact.html')),
+    path('learn/', TemplateView.as_view(template_name='learn.html'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

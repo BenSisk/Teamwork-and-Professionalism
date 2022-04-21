@@ -6,7 +6,7 @@
 		"footer footer" auto
 		/ 1fr 3fr;
 
-	grid-template-rows: 50px 82vh auto;
+	grid-template-rows: auto 77vh auto;
 }
 
 header {
@@ -61,7 +61,16 @@ a:link {
 }
 
 main {
+	display: flex;
 	grid-area: main;
+	justify-content: center;
+	align-items: center;
+}
+
+#accountmain {
+	display: flex;
+	grid-area: main;
+	flex-flow: column;
 }
 
 body {
@@ -72,30 +81,8 @@ header > a {
 	margin-left: 50px;
 }
 
-#welcomeText {
-	margin-top: 15%;
-	margin-left: 15%;
-}
-
-/*#imageOuter {
-	pointer-events:none;
-	z-index:41;
-	position:absolute;
-	display:flex;
-	width:100%;
-	height:100%;
-	right:0;
-	top:0;
-}*/
-
-#image {
-	position: absolute;
-	z-index: 41;
-	pointer-events: none;
-	margin-left: 50%;
-	width: 40%;
-	height: 40%;
-	margin-top: -19%;
+header img {
+	max-width: 95%;
 }
 
 h2 {
@@ -117,6 +104,7 @@ p, label {
 	display: block;
 	font-size: 1.5em;
 	color: #FFFFFF;
+	text-align: center;
 }
 
 #indexButtons {
@@ -134,17 +122,47 @@ footer {
 	padding-top: 52px;
 }
 
+
+#buy {
+	border-radius: 15px;
+	padding: 10px;
+	border: 1px solid #4D88F0;
+	color: white;
+	font-size: 24px;
+}
+
+#searchForm select {
+	text-align: center;
+}
+
+#buy:hover {
+	background: #4D88F0;
+}
+
 #results {
 	display: flex;
 	flex-wrap: wrap;
-	flex-direction: row wrap;
 	gap: 12px;
+	flex-direction: row;
+	justify-content: center;
 }
 
 #searchForm {
-	display: flex;
-	flex-flow: row;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
 }
+
+#searchText h1 {
+	text-align: center;
+}
+
+#searchText h2 {
+    text-align: center;
+}
+
 h1, h2 {
 	color: #4D88F0;
 }
@@ -161,6 +179,10 @@ h1, h2 {
 	justify-content: center;
 
 	padding: 10px 10px 10px 10px;
+}
+
+#foundResults {
+	color: #4D88F0;
 }
 
 #resultsContainer > img {
@@ -197,6 +219,16 @@ h1, h2 {
        background: #4D88F0;
 }
 
+#contactText {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+}
+
+#contactText > * {
+	text-align: center;
+}
+
 #loginForm {
 	display: flex;
 	flex-direction: column;
@@ -205,12 +237,7 @@ h1, h2 {
 	top: 50%;
 	position: absolute;
 	transform: translate(-50%, -50%);
-}
-
-#searchForm > * {
-	display: flex;
-	flex-direction: row;
-	gap: 10px;
+	align-items: center;
 }
 
 #searchForm label {
@@ -231,7 +258,7 @@ h1, h2 {
 			"main" auto
 			"footer" auto;
 
-        	grid-template-rows: 50px 50px 77vh;
+        	grid-template-rows: auto auto 68vh auto;
 	}
 
 	header {
@@ -239,8 +266,7 @@ h1, h2 {
 	}
 
 	#navigationBar {
-		padding-top: 30px;
-		text-aling: center;
+		text-align: center;
 		display: flex;
 		flex-direction: column;
 	}
@@ -256,8 +282,8 @@ h1, h2 {
 		border: none;
 	}
 
-	#image {
-		margin-top: -28%;
+	#navigationBar li:first-child {
+		margin-left: unset;
 	}
 
 }
@@ -268,23 +294,69 @@ h1, h2 {
 	}
 
 	#welcomeText {
-		margin-top: 25%;
 		text-align: center;
-		margin-left: unset;
 	}
 
 	#indexButtons {
 		justify-content: center;
 	}
+
+        #navigationBar li:first-child {
+                margin-left: unset;
+        }
+
 }
 
 @media only screen and (max-width: 650px) {
+        #gridContainer {
+                display: grid;
+                grid:
+                        "header" auto
+                        "nav" auto
+                        "main" auto
+                        "footer" auto;
 
-        #navigationBar {
-                padding-top: 30px;
-                text-aling: center;
-                display: flex;
-                flex-direction: column;
+                grid-template-rows: auto auto auto auto;
         }
 
+	ul {
+		display: flex;
+		flex-flow: column;
+		align-items: center;
+		list-style-type: none;
+	}
+
+	#welcomeText {
+		margin-top: unset;
+	}
+
+	
+        #navigationBar li:first-child {
+		margin-left: unset;
+        }
+
+	#indexButtons ul li {
+		margin: 2px;
+		width: auto;
+		border-radius: 15px;
+		padding: 25px;
+		border: 1px solid #4D88F0;
+		text-align: center;
+	}
+
+	#loginForm {
+	        left: unset;
+		top: unset;
+        	position: unset;
+	        transform: unset;
+		text-align: center;
+	}
+
+	#searchForm {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		align-content: center;
+		align-items: center;
+	}
 }
