@@ -5,15 +5,17 @@
     {%endblock%}
     {%block content%}
 
-    <main id="accountmain">
-	<h1>Account Password Change</h1>
-        {% if added %}
-            <h2>Your password has been changed!</h2>
-         {% endif %}
-        <form method="post">
-          {% csrf_token %}
-          {{ form }}
-          <button type="submit">Save changes</button>
-        </form>
+    <main>
+	<div id="accountmain">
+		<h1>Account Password Change</h1>
+        	{% if added %}
+	            <h2>Your password has been changed!</h2>
+        	 {% endif %}
+	        <form method="post">
+        	  {% csrf_token %}
+	          {{ form.as_p }}
+        	  <button type="submit">Save changes</button>
+	        </form>
+	</div>
     </main>
     {%endblock%}
