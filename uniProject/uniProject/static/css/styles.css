@@ -61,7 +61,16 @@ a:link {
 }
 
 main {
+	display: flex;
 	grid-area: main;
+	justify-content: center;
+	align-items: center;
+}
+
+#accountmain {
+	display: flex;
+	grid-area: main;
+	flex-flow: column;
 }
 
 body {
@@ -70,32 +79,6 @@ body {
 
 header > a {
 	margin-left: 50px;
-}
-
-#welcomeText {
-	margin-top: 15%;
-	margin-left: 15%;
-}
-
-/*#imageOuter {
-	pointer-events:none;
-	z-index:41;
-	position:absolute;
-	display:flex;
-	width:100%;
-	height:100%;
-	right:0;
-	top:0;
-}*/
-
-#image {
-	position: absolute;
-	z-index: 41;
-	pointer-events: none;
-	margin-left: 50%;
-	width: 40%;
-	height: 40%;
-	margin-top: -19%;
 }
 
 header img {
@@ -270,8 +253,8 @@ h1, h2 {
 		border: none;
 	}
 
-	#image {
-		margin-top: -28%;
+	#navigationBar li:first-child {
+		margin-left: unset;
 	}
 
 }
@@ -282,14 +265,17 @@ h1, h2 {
 	}
 
 	#welcomeText {
-		margin-top: 25%;
 		text-align: center;
-		margin-left: unset;
 	}
 
 	#indexButtons {
 		justify-content: center;
 	}
+
+        #navigationBar li:first-child {
+                margin-left: unset;
+        }
+
 }
 
 @media only screen and (max-width: 650px) {

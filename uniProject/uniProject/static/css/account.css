@@ -1,19 +1,9 @@
-
-
 /* Account Css */
 
 #accountmain {
 	color: white;
 	text-align: center;
 }
-
-/*#form {
-	margin-top: 10%;
-}*/
-
-/*#accountmain form {
-	display: inline-block;
-}*/
 
 input {
 	padding:5px;
@@ -39,7 +29,6 @@ input {
 	padding: 10px;
 	background: None;
 	color: white;
-	margin-left: 25%;
 }
 
 #accountmain button:hover {
