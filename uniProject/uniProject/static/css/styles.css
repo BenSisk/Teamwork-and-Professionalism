@@ -2,9 +2,11 @@
 	display: grid;
 	grid:
 		"header nav" auto
-		"main main" 1fr
+		"main main" auto
 		"footer footer" auto
 		/ 1fr 3fr;
+
+	grid-template-rows: 50px 82vh auto;
 }
 
 header {
@@ -23,17 +25,20 @@ ul {
 
 
 #navigationBar ul li:hover{
-       background: #4D88F0;
+	background: #4D88F0;
+	border-radius: 15px;
 }
 
 #navigationBar li {
 	margin-right: 20px;
 	font-size: 24px;
-}
-
-#navigationBar li:not(:last-child) {
+	padding: 10px;
 	margin-top: 10px;
 }
+
+/*#navigationBar li:not(:last-child) {
+	margin-top: 10px;
+}*/
 
 #navigationBar li a {
 	color: #FFFFFF;
@@ -44,7 +49,7 @@ ul {
 	right:75px;
 	position: absolute;
 	padding: 10px;
-	border: 1px solid #FA921C;
+	border: 1px solid #4D88F0;
 }
 
 #navigationBar li:first-child {
@@ -68,9 +73,8 @@ header > a {
 }
 
 #welcomeText {
-	margin-top: 10%;
+	margin-top: 15%;
 	margin-left: 15%;
-/*	margin: 0 auto;*/
 }
 
 /*#imageOuter {
@@ -88,10 +92,10 @@ header > a {
 	position: absolute;
 	z-index: 41;
 	pointer-events: none;
-	margin-left: 48%;
+	margin-left: 50%;
 	width: 40%;
 	height: 40%;
-	margin-top: -13%;
+	margin-top: -19%;
 }
 
 h2 {
@@ -123,11 +127,11 @@ p, label {
 
 footer {
 	grid-area: footer;
-	position:absolute;
-	bottom:0;
 	text-align: center;
+	bottom: 0;
 	width:100%;
 	height:60px;   /* Height of the footer */
+	padding-top: 52px;
 }
 
 #results {
@@ -142,7 +146,7 @@ footer {
 	flex-flow: row;
 }
 h1, h2 {
-	color: #FA921C;
+	color: #4D88F0;
 }
 
 #resultsContainer {
@@ -176,16 +180,16 @@ h1, h2 {
        width: 50%;
        border-radius: 15px;
        padding: 10px;
-       border: 1px solid #FA921C;
+       border: 1px solid #4D88F0;
        text-align: center;
 }
 
 
-#ContactButton a{
+#contactButton a {
        color: #FFFFFF;
 }
 
-#learnButton a{
+#learnButton a {
        color: #FFFFFF;
 }
 
@@ -193,7 +197,7 @@ h1, h2 {
        background: #4D88F0;
 }
 
-main > form {
+#loginForm {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
@@ -209,3 +213,78 @@ main > form {
 	gap: 10px;
 }
 
+#searchForm label {
+	font-size: 18px;
+}
+
+#submitInput {
+	height: 30px;
+	width: 100px;
+}
+
+@media only screen and (max-width: 1400px) {
+	#gridContainer {
+		display: grid;
+		grid:
+			"header" auto
+			"nav" auto
+			"main" auto
+			"footer" auto;
+
+        	grid-template-rows: 50px 50px 77vh;
+	}
+
+	header {
+		text-align: center;
+	}
+
+	#navigationBar {
+		padding-top: 30px;
+		text-aling: center;
+		display: flex;
+		flex-direction: column;
+	}
+
+	nav ul {
+		justify-content: center;
+		padding-left: unset;
+	}
+
+	#navigationBar li:last-child {
+		position: initial;
+		padding: 10px;
+		border: none;
+	}
+
+	#image {
+		margin-top: -28%;
+	}
+
+}
+
+@media only screen and (max-width: 1200px) {
+	#image {
+		display: none;
+	}
+
+	#welcomeText {
+		margin-top: 25%;
+		text-align: center;
+		margin-left: unset;
+	}
+
+	#indexButtons {
+		justify-content: center;
+	}
+}
+
+@media only screen and (max-width: 650px) {
+
+        #navigationBar {
+                padding-top: 30px;
+                text-aling: center;
+                display: flex;
+                flex-direction: column;
+        }
+
+}

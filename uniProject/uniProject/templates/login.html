@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <main>
-	<form action="." method="POST">
+	<form id="loginForm" action="." method="POST">
 		<h2 class="text-center">Log in</h2>
 		{% csrf_token %}
 		{{ form.as_table }}
