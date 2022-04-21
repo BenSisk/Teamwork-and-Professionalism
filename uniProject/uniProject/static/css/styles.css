@@ -219,6 +219,7 @@ h1, h2 {
 	top: 50%;
 	position: absolute;
 	transform: translate(-50%, -50%);
+	align-items: center;
 }
 
 #searchForm > * {
@@ -323,6 +324,14 @@ h1, h2 {
 		border-radius: 15px;
 		padding: 25px;
 		border: 1px solid #4D88F0;
+		text-align: center;
+	}
+
+	#loginForm {
+	        left: unset;
+		top: unset;
+        	position: unset;
+	        transform: unset;
 		text-align: center;
 	}
 
