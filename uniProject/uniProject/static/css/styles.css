@@ -293,6 +293,7 @@ h1, h2 {
 	ul {
 		display: flex;
 		flex-flow: column;
+		align-items: center;
 		list-style-type: none;
 	}
 
