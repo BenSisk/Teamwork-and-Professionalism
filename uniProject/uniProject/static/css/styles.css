@@ -201,6 +201,16 @@ h1, h2 {
        background: #4D88F0;
 }
 
+#contactText {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+}
+
+#contactText > * {
+	text-align: center;
+}
+
 #loginForm {
 	display: flex;
 	flex-direction: column;
