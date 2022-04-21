@@ -104,6 +104,7 @@ p, label {
 	display: block;
 	font-size: 1.5em;
 	color: #FFFFFF;
+	text-align: center;
 }
 
 #indexButtons {
@@ -121,17 +122,47 @@ footer {
 	padding-top: 52px;
 }
 
+
+#buy {
+	border-radius: 15px;
+	padding: 10px;
+	border: 1px solid #4D88F0;
+	color: white;
+	font-size: 24px;
+}
+
+#searchForm select {
+	text-align: center;
+}
+
+#buy:hover {
+	background: #4D88F0;
+}
+
 #results {
 	display: flex;
 	flex-wrap: wrap;
-	flex-direction: row wrap;
 	gap: 12px;
+	flex-direction: row;
+	justify-content: center;
 }
 
 #searchForm {
-	display: flex;
-	flex-flow: row;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
 }
+
+#searchText h1 {
+	text-align: center;
+}
+
+#searchText h2 {
+    text-align: center;
+}
+
 h1, h2 {
 	color: #4D88F0;
 }
@@ -148,6 +179,10 @@ h1, h2 {
 	justify-content: center;
 
 	padding: 10px 10px 10px 10px;
+}
+
+#foundResults {
+	color: #4D88F0;
 }
 
 #resultsContainer > img {
@@ -203,12 +238,6 @@ h1, h2 {
 	position: absolute;
 	transform: translate(-50%, -50%);
 	align-items: center;
-}
-
-#searchForm > * {
-	display: flex;
-	flex-direction: row;
-	gap: 10px;
 }
 
 #searchForm label {
@@ -301,6 +330,7 @@ h1, h2 {
 		margin-top: unset;
 	}
 
+	
         #navigationBar li:first-child {
 		margin-left: unset;
         }
@@ -322,4 +352,11 @@ h1, h2 {
 		text-align: center;
 	}
 
+	#searchForm {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		align-content: center;
+		align-items: center;
+	}
 }
