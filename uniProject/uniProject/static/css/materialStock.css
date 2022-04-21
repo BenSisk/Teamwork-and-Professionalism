@@ -1,0 +1,61 @@
+/* StockManagement.html */
+
+/* Header */
+#StockManagementHeader{
+    font-family: helvetica;
+    color: #337ab7;
+    text-align: center;
+    width: 100%;
+    display: block;
+    font-weight: bolder;
+}
+
+/* Add, Edit, Delete Buttons */
+#itemControlButtonContainer {
+
+}
+
+.itemControlButton {
+    display: inline-block;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.itemControlButton a{
+    color: #ffffff;
+}
+
+.itemControlButton:hover{
+    background-color: #4D88F0;
+}
+
+/* Stock Items Table */
+.table{
+    font-size: 20px;
+    text-align: center;
+    width: 95%;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.table tr:nth-child(odd){
+	background: #e65e5e
+}
+
+.table tr:nth-child(even){
+	background-color:#db8b8b;
+}
+
+th {
+    background-color: #e74040;
+    color: white;
+}
+
+#display_table{
+    background-color: #aaaaaa;
+    border-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 20px;
+}

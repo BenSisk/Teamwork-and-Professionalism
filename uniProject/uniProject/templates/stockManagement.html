@@ -1,15 +1,35 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<!--<link rel="stylesheet" href="{% static 'css/.css' %}">-->
+<link rel="stylesheet" href="{% static 'css/materialStock.css' %}">
 <main>
-    <h1>Stock Management</h1>
-    <div id="flex">
-        {% for instance in queryset %}
-        {{instance.name}}, {{instance.materialType}}, {{instance.quantity}}
-
-        {% endfor %}
-        <br><br>
+    <div>
+        <div id="StockManagementHeader">
+        <h1>Stock Management</h1>
+        <div id="itemControlButtonContainer">
+            <p class="itemControlButton"><a href="/addItems/"> Add Item ></a></p>
+            <p class="itemControlButton"><a href="/addItems/"> Edit Item ></a></p>
+            <p class="itemControlButton"><a href="/addItems/"> Delete Item ></a></p>
+        </div>
+        </div>
+        <div id="display_table">
+            
+            <table class="table">
+                <thead>
+                    <th>Name </th>
+                    <th>Material Type</th>
+                    <th>Quantity</th>
+                </thead>
+            {% for instance in queryset %}
+            <tr>
+                <td>{{instance.name}}</td>
+                <td>{{instance.materialType}}</td>
+                <td>{{instance.quantity}}</td>
+            </tr>
+            {% endfor %}
+            </table>
+            
+        </div>
     </div>
 </main>
 

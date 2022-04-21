@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
 from .models import Stock
@@ -21,6 +21,7 @@ def addItemsView(request):
     
     if form.is_valid():
         form.save()
+        return redirect('/stock')
 
     context = {
         "form": form,
