@@ -194,3 +194,18 @@ body{
        background: #4D88F0;
 }
 
+
+@media only screen and (max-width: 950px) {
+	#maingridContainer {
+		display: flex;
+		flex-flow: column;
+		grid-gap: 1em;
+		align-items: center;
+		justify-items: center;
+		padding: unset;
+	}
+
+	#gridContainer {
+		grid-template-rows: auto auto auto auto;
+	}
+}
