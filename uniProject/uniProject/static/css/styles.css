@@ -290,7 +290,7 @@ h1, h2 {
                         "main" auto
                         "footer" auto;
 
-                grid-template-rows: auto auto 43vh auto;
+                grid-template-rows: auto auto auto auto;
         }
 
 	ul {
