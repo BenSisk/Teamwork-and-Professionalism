@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!--<link rel="stylesheet" href="{% static 'css/.css' %}">-->
+<main>
+    <h1>Stock Management</h1>
+    <div id="flex">
+        {% for instance in queryset %}
+        {{instance.name}}, {{instance.materialType}}, {{instance.quantity}}
+
+        {% endfor %}
+        <br><br>
+    </div>
+</main>
+
+{% endblock %}
