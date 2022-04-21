@@ -1,12 +1,9 @@
 
 /* Upload Css */
 
-#maingridContainer {
-	display: grid;
-	grid-template-areas:
-			'blank form upload ';
-	grid-template-columns: 40% 20% 40%;
-	grid-gap: 1em;
+#uploadMain {
+	display: flex;
+	flex-flow: column;
   	padding: 10px;
 	font-family: Arial, Helvetica, sans-serif;
 }

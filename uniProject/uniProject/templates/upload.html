@@ -4,11 +4,8 @@
     <link rel="stylesheet" href="{% static 'css/upload.css' %}">
     {%endblock%}
     {%block content%}
-    <main>
+    <main id="uploadMain">
     <h1>Upload New Product</h1>
-    <div id="maingridContainer">
-
-
 
     <!-- List of uploaded documents -->
 	 <div id="currentuploads">
@@ -40,7 +37,6 @@
                  {{ form.docfile.errors }}</p>
                 <p id="submitbox"><input type="submit" value="Upload"/></p>
             </form>
-        </div>
     </div>
     </main>
     {%endblock%}
