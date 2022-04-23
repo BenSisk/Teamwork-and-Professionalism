@@ -245,7 +245,7 @@ def strip_website(link):
 	linkNew = linkNew.replace('https://', "")
 	linkNew = linkNew.replace('http://', "")
 
-	link = regex.sub("([a-zA-Z0-9_.-])\w+(?:\/([a-zA-Z0-9_.-].*))", "", linkNew)
+	link = regex.sub("(?:\/([a-zA-Z0-9].*))", "", linkNew)
 
 	return link
 
