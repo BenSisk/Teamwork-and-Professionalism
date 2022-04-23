@@ -14,13 +14,16 @@ def blacklist(request):
 
 		if len(website) > 0:
 			myCrawler.add_to_blackList(website)
+			message = "Added {} to blacklist".format(website)
 
 		if len(delete) > 0:
 			myCrawler.remove(delete)
+			message = "deleted {} from blacklist".format(delete)
 
 		blackListForm = currentBlackList()
 
 		context = {
+			'message': message,
 			'blacklistForm': blackListForm,
 		}
 
