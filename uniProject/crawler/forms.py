@@ -40,7 +40,7 @@ class currentBlackList(forms.Form):
 
 		return data
 
-	removeList = forms.TypedChoiceField(widget=forms.Select(), initial='')
+	removeList = forms.TypedChoiceField(label="Current items in blacklist", widget=forms.Select(), initial='')
 
 class BlackList(forms.Form):
 	def __init__(self, *args, **kwargs):

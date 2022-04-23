@@ -22,8 +22,19 @@ def blacklist(request):
 
 		blackListForm = currentBlackList()
 
+		try: message
+		except NameError:
+			message = "No item to delete"
+
 		context = {
 			'message': message,
+			'blacklistForm': blackListForm,
+		}
+
+	else:
+		blackListForm = currentBlackList()
+
+		context = {
 			'blacklistForm': blackListForm,
 		}
 
