@@ -15,6 +15,13 @@
 					<input id="submitInput" type="submit" value="Submit">
 				</form>
 			{% endif %}
+                        {% if results %}
+                                <form id="searchForm" action="{% url 'blacklist' %}" method="post">
+                                        {% csrf_token %}
+                                        {{blacklistForm.as_p}}
+                                        <input id="submitInput" type="submit" value="Add">
+                                </form>
+                        {% endif %}
 
 			{% if results %}
 				<h2>Price Results</h2>

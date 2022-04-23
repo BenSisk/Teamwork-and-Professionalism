@@ -12,6 +12,7 @@ from os.path import exists
 from os import remove
 import base64
 from decimal import *
+from os.path import exists
 
 # Static configuration... Will move to a configuration file
 ENCODED_API_KEY = "ZTcxMTFlZGRlMTY2MDBiZjM4MmFkNDM3ZmM0YjI2OGIwNzc5MTY4ODBkNmE1NjljZjg5NzM4YTExN2RjNDFhYg=="
@@ -20,11 +21,12 @@ USER_AGENT = {
 TMP_DIR = "/tmp/"
 TMP_FILE = "tmpPageResults.txt"
 
+BLACKLIST_FILE = "data/blacklist.txt"
+
 getNewPage = False
 searchURL = "https://serpapi.com/search.json?engine=google&q=###PRODUCT###&location=United+Kingdom&google_domain=google.co.uk&gl=uk&hl=en&tbm=shop&num=100&api_key=###KEY###"
 productString = "+%28L%29+%28T%29+%28W%29"
 urlStrip = "https://"
-
 
 def update_url(url, searchString):
     url = url.replace("###PRODUCT###", searchString)
@@ -132,14 +134,20 @@ def extract_details(jsonFile, calcVolume):
                 # key["link"].replace(urlStrip,"")
                 resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"],
                               '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
-                filteredResults.append(resultList)
+
+		# only add if it's not in a blacklist
+                if not is_blackListed(key["link"]):
+                              filteredResults.append(resultList)
+
             elif not calcVolume:
                 volume = "0"
                 price = key["price"].strip("£")
                 price = float(price.replace(',', ''))
                 delivery = get_delivery(key, price)
                 resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"]]
-                filteredResults.append(resultList)
+
+                if not is_blackListed(key["link"]):
+                       filteredResults.append(resultList)
 
         if calcVolume:
             # sort on volume
@@ -207,7 +215,6 @@ def convert_to_mm(dimensions):
 
 
 def calculate_volume(dimensions):
-    print(dimensions)
     # convert to mm to inches
     volume = (dimensions[0] / 25.4) * (dimensions[1] / 25.4) * (dimensions[2] / 25.4)
 
@@ -232,3 +239,46 @@ def startCrawler(getNewPage, numResults, searchString, volume):
         return results
     else:
         return results[:numResults]
+
+def strip_website(link):
+	linkNew = link.replace('https://www.google.co.uk/url?url=', "")
+	linkNew = linkNew.replace('https://', "")
+	linkNew = linkNew.replace('http://', "")
+
+	link = regex.sub("(?:\/([A-z].*))", "", linkNew)
+
+	return link
+
+def get_website_list():
+	website_list = []
+	with open("data/data.json") as jsonContent:
+		data = json.load(jsonContent)
+
+	for key in data["shopping_results"]:
+		link = key["link"]
+
+		link = strip_website(link)
+
+		if link not in website_list and len(link) > 0:
+			website_list.append(link)
+
+	return website_list
+
+def add_to_blackList(site):
+	if not exists(BLACKLIST_FILE):
+		with open(BLACKLIST_FILE, "w") as blacklistFile:
+			blacklistFile.write(site + "\n")
+	else:
+		with open(BLACKLIST_FILE) as f:
+			if site not in f.read():
+				with open(BLACKLIST_FILE, "a") as blacklistFile:
+					blacklistFile.write(site + "\n")
+
+def is_blackListed(link):
+	link = strip_website(link)
+	if exists(BLACKLIST_FILE):
+		with open(BLACKLIST_FILE) as f:
+			if link in f.read():
+				return True
+	else:
+		return False

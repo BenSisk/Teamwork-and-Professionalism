@@ -1,4 +1,5 @@
 from django import forms
+from . import myCrawler
 
 NEW_PAGE = [
     (True, "Yes"),
@@ -12,6 +13,7 @@ RESULTS_PER_PAGE = [
     (100, "100"),
 ]
 
+BLACK_LIST_WEBSITE = [(x, x) for x in myCrawler.get_website_list()]
 
 def string_to_bool(data):
     if data == "True":
@@ -19,6 +21,14 @@ def string_to_bool(data):
     else:
         return False
 
+
+class BlackList(forms.Form):
+    webBlackList = forms.CharField(label="Add to Blacklist", widget=forms.Select(choices=BLACK_LIST_WEBSITE))
+
+    def get_website(self):
+        data = self.cleaned_data("webBlackList")
+
+        return data
 
 class SearchCriteria(forms.Form):
     searchTerm = forms.CharField(label="Search:")
