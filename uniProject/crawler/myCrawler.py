@@ -251,18 +251,22 @@ def strip_website(link):
 
 def get_website_list():
 	website_list = []
-	with open("data/data.json") as jsonContent:
-		data = json.load(jsonContent)
+	try:
+		with open("data/data.json") as jsonContent:
+			data = json.load(jsonContent)
+	except FileNotFoundError:
+		return ""
 
-	for key in data["shopping_results"]:
-		link = key["link"]
+	else:
+		for key in data["shopping_results"]:
+			link = key["link"]
 
-		link = strip_website(link)
+			link = strip_website(link)
 
-		if link not in website_list and len(link) > 0:
-			website_list.append(link)
+			if link not in website_list and len(link) > 0:
+				website_list.append(link)
 
-	return website_list
+		return website_list
 
 def add_to_blackList(site):
 	if not exists(BLACKLIST_FILE):
@@ -274,6 +278,28 @@ def add_to_blackList(site):
 				with open(BLACKLIST_FILE, "a") as blacklistFile:
 					blacklistFile.write(site + "\n")
 
+def remove(site):
+	import os
+	tmpFile = "data/blacklist.new"
+
+	print("to be delete " + site)
+	with open(BLACKLIST_FILE) as f, open(tmpFile, "w") as fout:
+		for line in f:
+			print("Current line is: " + line)
+			if line == site + "\n":
+				print("foudn match")
+				line = line.replace(site + "\n", "")
+
+			fout.write(line)
+
+	os.rename(tmpFile, BLACKLIST_FILE)
+
+def get_blacklist():
+	with open(BLACKLIST_FILE) as file:
+		website = [line.rstrip() for line in file]
+
+	return website
+
 def blackListed(link):
 	link = strip_website(link)
 	if exists(BLACKLIST_FILE):
@@ -282,3 +308,4 @@ def blackListed(link):
 				return True
 	else:
 		return False
+

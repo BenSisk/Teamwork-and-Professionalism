@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from . import myCrawler
-from .forms import SearchCriteria, BlackList
+from .forms import SearchCriteria, BlackList, currentBlackList
 
 
 # Create your views here.
@@ -10,15 +10,21 @@ from .forms import SearchCriteria, BlackList
 def blacklist(request):
 	if request.method == 'POST':
 		website = request.POST.get('webBlackList', '')
-		myCrawler.add_to_blackList(website)
-		print(website)
-#		blackListForm = BlackList(request.POST)
+		delete = request.POST.get('removeList', '')
 
-#		if blackListForm.is_valid():
-#			webPage = blackListForm.get_website()
-#			print(webPage)
+		if len(website) > 0:
+			myCrawler.add_to_blackList(website)
 
-	return redirect(reverse('crawler'))
+		if len(delete) > 0:
+			myCrawler.remove(delete)
+
+		blackListForm = currentBlackList()
+
+		context = {
+			'blacklistForm': blackListForm,
+		}
+
+	return render(request, 'blacklist.html', context)
 
 def crawler_view(request):
     # If this is a POST request then process the Form data
