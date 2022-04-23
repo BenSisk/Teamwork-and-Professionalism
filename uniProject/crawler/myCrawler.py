@@ -136,7 +136,7 @@ def extract_details(jsonFile, calcVolume):
                               '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
 
 		# only add if it's not in a blacklist
-                if not is_blackListed(key["link"]):
+                if not blackListed(key["link"]):
                               filteredResults.append(resultList)
 
             elif not calcVolume:
@@ -146,7 +146,7 @@ def extract_details(jsonFile, calcVolume):
                 delivery = get_delivery(key, price)
                 resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"]]
 
-                if not is_blackListed(key["link"]):
+                if not blackListed(key["link"]):
                        filteredResults.append(resultList)
 
         if calcVolume:
@@ -274,7 +274,7 @@ def add_to_blackList(site):
 				with open(BLACKLIST_FILE, "a") as blacklistFile:
 					blacklistFile.write(site + "\n")
 
-def is_blackListed(link):
+def blackListed(link):
 	link = strip_website(link)
 	if exists(BLACKLIST_FILE):
 		with open(BLACKLIST_FILE) as f:
