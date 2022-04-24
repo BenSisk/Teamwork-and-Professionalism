@@ -1,5 +1,5 @@
 ## Teamwork and Professionalism Assignment
-A website build using the django framework for the assignment in module KV6002. Using a mixture of python, html and css
+A website built using the django framework for the assignment in module KV6002. Using a mixture of python, html and css
 
 Table of contents
 =================
