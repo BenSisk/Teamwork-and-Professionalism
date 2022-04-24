@@ -9,26 +9,34 @@
 		<div id="searchText">
 			<h1> Price Search </h1>
 			{% if forms %}
-				<form id="searchForm" method="post">
+				<form class="searchForm" method="post">
 					{% csrf_token %}
 					{{form.as_p}}
-					<input id="submitInput" type="submit" value="Submit">
+					<input class="submitInput" type="submit" value="Submit">
 				</form>
 			{% endif %}
+                        {% if results %}
+				<h2>Blacklist Website<h2>
+                                <form class="searchForm" action="{% url 'blacklist' %}" method="post">
+                                        {% csrf_token %}
+                                        {{blacklistForm.as_p}}
+                                        <input class="submitInput" type="submit" value="Add">
+                                </form>
+                        {% endif %}
 
 			{% if results %}
 				<h2>Price Results</h2>
 				<div id="results">
 				{% for result in results %}
-					<div id="resultsContainer">
-						<img id="resultsImg" src={{result.0}}>
-						<p><b id="foundResults">Title:</b> {{ result.1 }}</p>
-						<p><b id="foundResults">Price:</b> {{result.3}}</p>
-						<p><b id="foundResults">Delivery:</b> {{result.4}}</p>
+					<div class="resultsContainer">
+						<img class="resultsImg" src="{{result.0}}" alt="Extracted image from google">
+						<p><b class="foundResults">Title:</b> {{ result.1 }}</p>
+						<p><b class="foundResults">Price:</b> &pound;{{result.3}}</p>
+						<p><b class="foundResults">Delivery:</b> &pound;{{result.4}}</p>
 						{% if volume %}
-							<p><b id="foundResults">Cost per cubic inch:</b> &pound;{{result.6}}</p>
+							<p><b class="foundResults">Cost per cubic inch:</b> &pound;{{result.6}}</p>
 						{% endif %}
-						<a id="buy" href={{result.5}}}>Buy</a>
+						<a class="buy" href="{{result.5}}">Buy</a>
 					</div>
 				{% endfor %}
 				</div>

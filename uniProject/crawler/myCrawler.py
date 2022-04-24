@@ -8,10 +8,12 @@ Created on Mon Feb 21 10:23:52 2022
 from urllib.request import urlopen
 import re as regex
 import json
-from os.path import exists
 from os import remove
 import base64
 from decimal import *
+from os.path import exists
+import string
+import operator
 
 # Static configuration... Will move to a configuration file
 ENCODED_API_KEY = "ZTcxMTFlZGRlMTY2MDBiZjM4MmFkNDM3ZmM0YjI2OGIwNzc5MTY4ODBkNmE1NjljZjg5NzM4YTExN2RjNDFhYg=="
@@ -19,6 +21,8 @@ USER_AGENT = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36'}
 TMP_DIR = "/tmp/"
 TMP_FILE = "tmpPageResults.txt"
+
+BLACKLIST_FILE = "data/blacklist.txt"
 
 getNewPage = False
 searchURL = "https://serpapi.com/search.json?engine=google&q=###PRODUCT###&location=United+Kingdom&google_domain=google.co.uk&gl=uk&hl=en&tbm=shop&num=100&api_key=###KEY###"
@@ -81,7 +85,7 @@ def get_delivery(key, price):
     else:
         try:
             delivery = str(regex.search("(?<=£)(.*)(?=\sdelivery)", key["delivery"]).group())
-        except:
+        except AttributeError:
             if "Free" in key["delivery"]:
                 delivery = "0.00"
             else:
@@ -89,6 +93,18 @@ def get_delivery(key, price):
 
     return delivery
 
+
+def price_is_valid(price):
+	foundPrice = 0
+	price = price.strip("£")
+	for token in price.split():
+		try:
+			# if this succeeds, you have your (first) float
+			foundPrice = float(token)
+		except ValueError:
+			pass
+
+	return foundPrice
 
 def extract_details(jsonFile, calcVolume):
     if exists(jsonFile):
@@ -112,7 +128,8 @@ def extract_details(jsonFile, calcVolume):
                     dimensions.append(packSize)
 
                 volume = calculate_volume(dimensions)
-                price = float(key["price"].strip("£"))
+
+                price = price_is_valid(key["price"])
 
                 delivery = get_delivery(key, price)
 
@@ -130,35 +147,42 @@ def extract_details(jsonFile, calcVolume):
                     costPerVolume = Decimal(price) / Decimal(volume)
 
                 # key["link"].replace(urlStrip,"")
-                resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"],
-                              '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
-                filteredResults.append(resultList)
+
+                if price > 0:
+                      resultList = [key["thumbnail"], key["title"], volume, "{:.2f}".format(price), delivery, key["link"],
+                                    '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
+
+                # only add if it's not in a blacklist
+                if not blackListed(key["link"]):
+                    filteredResults.append(resultList)
+
             elif not calcVolume:
                 volume = "0"
-                price = key["price"].strip("£")
-                price = float(price.replace(',', ''))
+                price = price_is_valid(key["price"])
+
                 delivery = get_delivery(key, price)
-                resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"]]
-                filteredResults.append(resultList)
+                if price > 0:
+                        resultList = [key["thumbnail"], key["title"], volume, "{:.2f}".format(price), delivery, key["link"]]
+
+                if not blackListed(key["link"]):
+                    filteredResults.append(resultList)
 
         if calcVolume:
             # sort on volume
             sortedList = sorted(filteredResults, key=lambda x: x[6])
         else:
             # sort on price
-            sortedList = sorted(filteredResults, key=lambda x: x[3])
+            sortedList = sorted(filteredResults, key=lambda x: float(x[3]))
 
         return sortedList
     else:
-        print("No json file found, fetching")
-        data = get_json_results(productString)
-        save_page(data)
-
+        print("No json file found")
+        return False
 
 def extract_pack_size(title):
     try:
-        results = regex.search("(?<=Pack of )[0-9]", title).group()
-    except:
+        results = regex.search("(?<=pack of )[0-9]", title.lower()).group()
+    except AttributeError:
         packSize = False
         pass
     else:
@@ -170,10 +194,10 @@ def extract_pack_size(title):
 def get_dimensions(title):
     dimension = []
     try:
-        dimension.append(regex.search('\(L\)[^\s]+', title).group())
-        dimension.append(regex.search('\(W\)[^\s]+', title).group())
-        dimension.append(regex.search('\(T\)[^\s]+', title).group())
-    except:
+        dimension.append(regex.search('\(l\)[^\s]+', title.lower()).group())
+        dimension.append(regex.search('\(w\)[^\s]+', title.lower()).group())
+        dimension.append(regex.search('\(t\)[^\s]+', title.lower()).group())
+    except AttributeError:
         return False
     else:
         dimensions = strip_dimensions(dimension)
@@ -186,6 +210,10 @@ def strip_dimensions(dimensions):
     newDimensions = [s.replace('(L)', '') for s in dimensions]
     newDimensions = [s.replace('(W)', '') for s in newDimensions]
     newDimensions = [s.replace('(T)', '') for s in newDimensions]
+    newDimensions = [s.replace('(l)', '') for s in newDimensions]
+    newDimensions = [s.replace('(w)', '') for s in newDimensions]
+    newDimensions = [s.replace('(t)', '') for s in newDimensions]
+
     return newDimensions
 
 
@@ -193,10 +221,13 @@ def convert_to_mm(dimensions):
     for x, item in enumerate(dimensions):
         try:
             results = regex.search("[0-9][Mm](?:^|\s|$)", item).group()
-        except:
+        except AttributeError:
             # no results, extract the digits
-            dimensions[x] = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
-            pass
+            try:
+                    dimensions[x] = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
+            except AttributeError:
+                    # return default dimensions of 0
+                    dimensions[x] = 0
         else:
             # extract dimensions which  contain a decimal place
             size = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
@@ -207,19 +238,62 @@ def convert_to_mm(dimensions):
 
 
 def calculate_volume(dimensions):
-    print(dimensions)
-    # convert to mm to inches
-    volume = (dimensions[0] / 25.4) * (dimensions[1] / 25.4) * (dimensions[2] / 25.4)
+	try:
+		volume = (int(dimensions[0]) / 25.4) * (int(dimensions[1]) / 25.4) * (int(dimensions[2]) / 25.4)
+	except ValueError:
+		# return volume of 0
+		volume = 0
 
-    return volume
+	return float(volume)
 
+def parseSearchString(search):
+	if search is None:
+		search = "timber"
+
+	if search is "":
+		search = "timber"
+
+	search = str(search)
+
+	pattern = r'[' + string.punctuation + ']'
+
+	# Remove special characters from the string
+	search = regex.sub(pattern, '', search)
+
+	return search
+
+
+def isBool(input):
+
+	try:
+		input = bool(input)
+	except:
+		input = False
+
+	return input
+
+def isInt(input):
+	try:
+		input = int(input)
+	except ValueError:
+		input = -1
+
+	return input
 
 # Don't waste all the API calls for now, only get a new page when specified
 def startCrawler(getNewPage, numResults, searchString, volume):
+    searchString = parseSearchString(searchString)
+    getNewPage = isBool(getNewPage)
+    volumw = isBool(volume)
+    numResults = isInt(numResults)
+
+    print("searching for {}".format(searchString))
+    print(getNewPage)
     if getNewPage:
         if volume:
             searchString = searchString + "+%28L%29+%28T%29+%28W%29"
 
+        print("searching for {}".format(searchString))
         data = get_json_results(searchString)
 
         if save_page(data):
@@ -232,3 +306,79 @@ def startCrawler(getNewPage, numResults, searchString, volume):
         return results
     else:
         return results[:numResults]
+
+
+def strip_website(link):
+    linkNew = link.replace('https://www.google.co.uk/url?url=', "")
+    linkNew = linkNew.replace('https://', "")
+    linkNew = linkNew.replace('http://', "")
+
+    link = regex.sub("(?:\/(.*))", "", linkNew)
+
+    return link
+
+
+def get_website_list():
+    website_list = []
+    try:
+        with open("data/data.json") as jsonContent:
+            data = json.load(jsonContent)
+    except FileNotFoundError:
+        return ""
+
+    else:
+        for key in data["shopping_results"]:
+            link = key["link"]
+            # Remove special characters from the string
+
+            link = strip_website(link)
+
+            if link not in website_list and len(link) > 0:
+                website_list.append(link)
+
+        return website_list
+
+
+def add_to_blackList(site):
+    if not exists(BLACKLIST_FILE):
+        with open(BLACKLIST_FILE, "w") as blacklistFile:
+            blacklistFile.write(site + "\n")
+    else:
+        with open(BLACKLIST_FILE) as f:
+            if site not in f.read():
+                with open(BLACKLIST_FILE, "a") as blacklistFile:
+                    blacklistFile.write(site + "\n")
+
+
+def remove_from_blacklist(site):
+    import os
+    tmpFile = "data/blacklist.new"
+
+    print("to be delete " + site)
+    with open(BLACKLIST_FILE) as f, open(tmpFile, "w") as fout:
+        for line in f:
+            print("Current line is: " + line)
+            if line == site + "\n":
+                print("found match")
+                line = line.replace(site + "\n", "")
+
+            fout.write(line)
+
+    os.rename(tmpFile, BLACKLIST_FILE)
+
+
+def get_blacklist():
+    with open(BLACKLIST_FILE) as file:
+        website = [line.rstrip() for line in file]
+
+    return website
+
+
+def blackListed(link):
+    link = strip_website(link)
+    if exists(BLACKLIST_FILE):
+        with open(BLACKLIST_FILE) as f:
+            if link in f.read():
+                return True
+    else:
+        return False

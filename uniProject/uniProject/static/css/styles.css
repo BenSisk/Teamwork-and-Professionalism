@@ -24,9 +24,19 @@ ul {
 }
 
 
-#navigationBar ul li:hover{
+#navigationBar ul li:hover, #blacklistText a:hover{
 	background: #4D88F0;
 	border-radius: 15px;
+}
+
+#blacklistText a {
+	margin: 2px;
+	width: 50%;
+	border-radius: 15px;
+	padding: 10px;
+	border: 2px solid #4D88F0;
+	text-align: center;
+	color: white;
 }
 
 #navigationBar li {
@@ -85,7 +95,7 @@ header img {
 	max-width: 95%;
 }
 
-h2 {
+#adminh2 {
 	display: block;
 	font-size: 3em;
 	margin-top: 0.67em;
@@ -123,7 +133,7 @@ footer {
 }
 
 
-#buy {
+.buy {
 	border-radius: 15px;
 	padding: 10px;
 	border: 1px solid #4D88F0;
@@ -131,7 +141,7 @@ footer {
 	font-size: 24px;
 }
 
-#searchForm select {
+.searchForm select {
 	text-align: center;
 }
 
@@ -147,12 +157,21 @@ footer {
 	justify-content: center;
 }
 
-#searchForm {
-    display: flex;
-    flex-flow: row;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
+.searchForm {
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+	gap: 25px;
+}
+
+#blacklistText {
+	display: flex;
+	flex-flow: row;
+	flex-direction: column;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
 }
 
 #searchText h1 {
@@ -167,7 +186,7 @@ h1, h2 {
 	color: #4D88F0;
 }
 
-#resultsContainer {
+.resultsContainer {
 	display: flex;
 	max-width: 350px;
 	flex-direction: column;
@@ -181,11 +200,11 @@ h1, h2 {
 	padding: 10px 10px 10px 10px;
 }
 
-#foundResults {
+.foundResults {
 	color: #4D88F0;
 }
 
-#resultsContainer > img {
+.resultsContainer > img {
 	border-radius: 8px;
 	width: 150px;
 	height: 150px;
@@ -240,13 +259,14 @@ h1, h2 {
 	align-items: center;
 }
 
-#searchForm label {
+.searchForm label {
 	font-size: 18px;
 }
 
-#submitInput {
+.submitInput {
 	height: 30px;
 	width: 100px;
+	margin-top: 20px;
 }
 
 @media only screen and (max-width: 1400px) {
@@ -352,7 +372,7 @@ h1, h2 {
 		text-align: center;
 	}
 
-	#searchForm {
+	.searchForm {
 		display: flex;
 		flex-direction: column;
 		gap: 10px;

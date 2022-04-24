@@ -1,4 +1,5 @@
 from django import forms
+from . import myCrawler
 
 NEW_PAGE = [
     (True, "Yes"),
@@ -13,11 +14,56 @@ RESULTS_PER_PAGE = [
 ]
 
 
+def update_website_list():
+    black_list_website = [(x, x) for x in myCrawler.get_website_list()]
+
+    return black_list_website
+
+
+def update_blacklist():
+    current_black_list_website = [(x, x) for x in myCrawler.get_blacklist()]
+
+    return current_black_list_website
+
+
 def string_to_bool(data):
     if data == "True":
         return True
     else:
         return False
+
+
+class currentBlackList(forms.Form):
+	def __init__(self, *args, **kwargs):
+		super(currentBlackList, self).__init__(*args, **kwargs)
+		current_black_list_website = update_blacklist()
+		self.fields['removeList'].choices = current_black_list_website
+
+
+	def clean_website(self, test=None):
+		if test is not None:
+			website = test
+
+		if website is not str:
+			website=str(website)
+
+		if website == "":
+			website = "www.testwebsite.com"
+
+		return website
+
+
+	removeList = forms.TypedChoiceField(label="Current items in blacklist", widget=forms.Select(), initial='')
+
+
+class BlackList(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(BlackList, self).__init__(*args, **kwargs)
+        black_list_website = update_website_list()
+        self.fields['webBlackList'].choices = black_list_website
+
+    webBlackList = forms.TypedChoiceField(label='Website',
+                                          widget=forms.Select(), initial='')
 
 
 class SearchCriteria(forms.Form):
