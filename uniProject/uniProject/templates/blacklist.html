@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{%block style %}
+	<link rel="stylesheet" href="{% static 'css/crawler.css' %}">
+{%endblock%}
+
+{% block content %}
+	<main>
+		<div id="searchText">
+			<h1> Black List </h1>
+			<p> {{ message }} </p>
+                        <form id="searchForm" method="post">
+                               {% csrf_token %}
+                               {{blacklistForm.as_p}}
+                               <input id="submitInput" type="submit" value="delete">
+                        </form>
+
+			<a href="{% url 'crawler' %}">Return to Search</a>
+		</div>
+	</main>
+
+{% endblock %}
