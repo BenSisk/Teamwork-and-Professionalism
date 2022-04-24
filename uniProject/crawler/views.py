@@ -1,45 +1,49 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from . import myCrawler
 from .forms import SearchCriteria, BlackList, currentBlackList
 
 
 # Create your views here.
-
+@login_required
 def blacklist(request):
-	if request.method == 'POST':
-		website = request.POST.get('webBlackList', '')
-		delete = request.POST.get('removeList', '')
+    if request.method == 'POST':
+        website = request.POST.get('webBlackList', '')
+        delete = request.POST.get('removeList', '')
 
-		if len(website) > 0:
-			myCrawler.add_to_blackList(website)
-			message = "Added {} to blacklist".format(website)
+        if len(website) > 0:
+            myCrawler.add_to_blackList(website)
+            message = "Added {} to blacklist".format(website)
 
-		if len(delete) > 0:
-			myCrawler.remove(delete)
-			message = "deleted {} from blacklist".format(delete)
+        if len(delete) > 0:
+            myCrawler.remove_from_blacklist(delete)
+            message = "deleted {} from blacklist".format(delete)
 
-		blackListForm = currentBlackList()
+        blackListForm = currentBlackList()
 
-		try: message
-		except NameError:
-			message = "No item to delete"
+        # in the event we don't send a post request and message is unset. i.e accessing
+        # /blacklist/ with a get request
+        try:
+            message
+        except NameError:
+            message = "No item to delete"
 
-		context = {
-			'message': message,
-			'blacklistForm': blackListForm,
-		}
+        context = {
+            'message': message,
+            'blacklistForm': blackListForm,
+        }
 
-	else:
-		blackListForm = currentBlackList()
+    else:
+        blackListForm = currentBlackList()
 
-		context = {
-			'blacklistForm': blackListForm,
-		}
+        context = {
+            'blacklistForm': blackListForm,
+        }
 
-	return render(request, 'blacklist.html', context)
+    return render(request, 'blacklist.html', context)
 
+
+@login_required
 def crawler_view(request):
     # If this is a POST request then process the Form data
     if request.method == 'POST':
@@ -57,9 +61,6 @@ def crawler_view(request):
             volume = form.get_volume()
 
             results = myCrawler.startCrawler(newPage, numResults, searchString, volume)
-
-            if blackListForm.is_valid():
-                   blackListSite = blackListForm.get_site_list()
 
             context = {
                 'forms': True,

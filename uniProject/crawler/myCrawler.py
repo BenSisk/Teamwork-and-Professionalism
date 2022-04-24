@@ -8,7 +8,6 @@ Created on Mon Feb 21 10:23:52 2022
 from urllib.request import urlopen
 import re as regex
 import json
-from os.path import exists
 from os import remove
 import base64
 from decimal import *
@@ -27,6 +26,7 @@ getNewPage = False
 searchURL = "https://serpapi.com/search.json?engine=google&q=###PRODUCT###&location=United+Kingdom&google_domain=google.co.uk&gl=uk&hl=en&tbm=shop&num=100&api_key=###KEY###"
 productString = "+%28L%29+%28T%29+%28W%29"
 urlStrip = "https://"
+
 
 def update_url(url, searchString):
     url = url.replace("###PRODUCT###", searchString)
@@ -83,7 +83,7 @@ def get_delivery(key, price):
     else:
         try:
             delivery = str(regex.search("(?<=£)(.*)(?=\sdelivery)", key["delivery"]).group())
-        except:
+        except NameError:
             if "Free" in key["delivery"]:
                 delivery = "0.00"
             else:
@@ -135,9 +135,9 @@ def extract_details(jsonFile, calcVolume):
                 resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"],
                               '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
 
-		# only add if it's not in a blacklist
+                # only add if it's not in a blacklist
                 if not blackListed(key["link"]):
-                              filteredResults.append(resultList)
+                    filteredResults.append(resultList)
 
             elif not calcVolume:
                 volume = "0"
@@ -147,7 +147,7 @@ def extract_details(jsonFile, calcVolume):
                 resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"]]
 
                 if not blackListed(key["link"]):
-                       filteredResults.append(resultList)
+                    filteredResults.append(resultList)
 
         if calcVolume:
             # sort on volume
@@ -166,7 +166,7 @@ def extract_details(jsonFile, calcVolume):
 def extract_pack_size(title):
     try:
         results = regex.search("(?<=Pack of )[0-9]", title).group()
-    except:
+    except NameError:
         packSize = False
         pass
     else:
@@ -181,7 +181,7 @@ def get_dimensions(title):
         dimension.append(regex.search('\(L\)[^\s]+', title).group())
         dimension.append(regex.search('\(W\)[^\s]+', title).group())
         dimension.append(regex.search('\(T\)[^\s]+', title).group())
-    except:
+    except NameError:
         return False
     else:
         dimensions = strip_dimensions(dimension)
@@ -240,72 +240,77 @@ def startCrawler(getNewPage, numResults, searchString, volume):
     else:
         return results[:numResults]
 
+
 def strip_website(link):
-	linkNew = link.replace('https://www.google.co.uk/url?url=', "")
-	linkNew = linkNew.replace('https://', "")
-	linkNew = linkNew.replace('http://', "")
+    linkNew = link.replace('https://www.google.co.uk/url?url=', "")
+    linkNew = linkNew.replace('https://', "")
+    linkNew = linkNew.replace('http://', "")
 
-	link = regex.sub("(?:\/([a-zA-Z0-9].*))", "", linkNew)
+    link = regex.sub("(?:\/([a-zA-Z0-9].*))", "", linkNew)
 
-	return link
+    return link
+
 
 def get_website_list():
-	website_list = []
-	try:
-		with open("data/data.json") as jsonContent:
-			data = json.load(jsonContent)
-	except FileNotFoundError:
-		return ""
+    website_list = []
+    try:
+        with open("data/data.json") as jsonContent:
+            data = json.load(jsonContent)
+    except FileNotFoundError:
+        return ""
 
-	else:
-		for key in data["shopping_results"]:
-			link = key["link"]
+    else:
+        for key in data["shopping_results"]:
+            link = key["link"]
 
-			link = strip_website(link)
+            link = strip_website(link)
 
-			if link not in website_list and len(link) > 0:
-				website_list.append(link)
+            if link not in website_list and len(link) > 0:
+                website_list.append(link)
 
-		return website_list
+        return website_list
+
 
 def add_to_blackList(site):
-	if not exists(BLACKLIST_FILE):
-		with open(BLACKLIST_FILE, "w") as blacklistFile:
-			blacklistFile.write(site + "\n")
-	else:
-		with open(BLACKLIST_FILE) as f:
-			if site not in f.read():
-				with open(BLACKLIST_FILE, "a") as blacklistFile:
-					blacklistFile.write(site + "\n")
+    if not exists(BLACKLIST_FILE):
+        with open(BLACKLIST_FILE, "w") as blacklistFile:
+            blacklistFile.write(site + "\n")
+    else:
+        with open(BLACKLIST_FILE) as f:
+            if site not in f.read():
+                with open(BLACKLIST_FILE, "a") as blacklistFile:
+                    blacklistFile.write(site + "\n")
 
-def remove(site):
-	import os
-	tmpFile = "data/blacklist.new"
 
-	print("to be delete " + site)
-	with open(BLACKLIST_FILE) as f, open(tmpFile, "w") as fout:
-		for line in f:
-			print("Current line is: " + line)
-			if line == site + "\n":
-				print("foudn match")
-				line = line.replace(site + "\n", "")
+def remove_from_blacklist(site):
+    import os
+    tmpFile = "data/blacklist.new"
 
-			fout.write(line)
+    print("to be delete " + site)
+    with open(BLACKLIST_FILE) as f, open(tmpFile, "w") as fout:
+        for line in f:
+            print("Current line is: " + line)
+            if line == site + "\n":
+                print("found match")
+                line = line.replace(site + "\n", "")
 
-	os.rename(tmpFile, BLACKLIST_FILE)
+            fout.write(line)
+
+    os.rename(tmpFile, BLACKLIST_FILE)
+
 
 def get_blacklist():
-	with open(BLACKLIST_FILE) as file:
-		website = [line.rstrip() for line in file]
+    with open(BLACKLIST_FILE) as file:
+        website = [line.rstrip() for line in file]
 
-	return website
+    return website
+
 
 def blackListed(link):
-	link = strip_website(link)
-	if exists(BLACKLIST_FILE):
-		with open(BLACKLIST_FILE) as f:
-			if link in f.read():
-				return True
-	else:
-		return False
-
+    link = strip_website(link)
+    if exists(BLACKLIST_FILE):
+        with open(BLACKLIST_FILE) as f:
+            if link in f.read():
+                return True
+    else:
+        return False
