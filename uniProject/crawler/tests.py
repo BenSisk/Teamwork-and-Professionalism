@@ -111,3 +111,20 @@ class testCrawler(TestCase):
 
 		self.assertEqual(test, 5)
 
+
+	def test_no_pack_size(self):
+		test_data = "this produce has no pack size"
+		test = myCrawler.extract_pack_size(test_data)
+
+		self.assertEqual(test, False)
+
+
+	def test_missing_json_file(self):
+		test = myCrawler.extract_details("path/does/not/exist", True)
+
+		self.assertEqual(test, False)
+
+	def test_price_is_valid_float(self):
+		test = myCrawler.price_is_valid("this is a price 24.88 for a test")
+
+		self.assertEqual(test, 24.88)

@@ -93,6 +93,16 @@ def get_delivery(key, price):
     return delivery
 
 
+def price_is_valid(price):
+	for token in price.split():
+		try:
+			# if this succeeds, you have your (first) float
+			foundPrice = float(token)
+		except ValueError:
+			pass
+
+	return foundPrice
+
 def extract_details(jsonFile, calcVolume):
     if exists(jsonFile):
         filteredResults = []
@@ -116,6 +126,8 @@ def extract_details(jsonFile, calcVolume):
 
                 volume = calculate_volume(dimensions)
                 price = float(key["price"].strip("£"))
+
+                price = price_is_valid(price)
 
                 delivery = get_delivery(key, price)
 
@@ -159,10 +171,8 @@ def extract_details(jsonFile, calcVolume):
 
         return sortedList
     else:
-        print("No json file found, fetching")
-        data = get_json_results(productString)
-        save_page(data)
-
+        print("No json file found")
+        return False
 
 def extract_pack_size(title):
     try:
