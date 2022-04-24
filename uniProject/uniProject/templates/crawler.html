@@ -16,6 +16,7 @@
 				</form>
 			{% endif %}
                         {% if results %}
+				<h2>Blacklist Website<h2>
                                 <form class="searchForm" action="{% url 'blacklist' %}" method="post">
                                         {% csrf_token %}
                                         {{blacklistForm.as_p}}

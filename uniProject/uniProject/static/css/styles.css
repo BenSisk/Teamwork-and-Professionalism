@@ -24,9 +24,19 @@ ul {
 }
 
 
-#navigationBar ul li:hover{
+#navigationBar ul li:hover, #blacklistText a:hover{
 	background: #4D88F0;
 	border-radius: 15px;
+}
+
+#blacklistText a {
+	margin: 2px;
+	width: 50%;
+	border-radius: 15px;
+	padding: 10px;
+	border: 2px solid #4D88F0;
+	text-align: center;
+	color: white;
 }
 
 #navigationBar li {
@@ -85,7 +95,7 @@ header img {
 	max-width: 95%;
 }
 
-h2 {
+#adminh2 {
 	display: block;
 	font-size: 3em;
 	margin-top: 0.67em;
@@ -148,11 +158,20 @@ footer {
 }
 
 .searchForm {
-    display: flex;
-    flex-flow: row;
-    justify-content: center;
-    align-items: center;
-    gap: 25px;
+	display: flex;
+	flex-flow: row;
+	justify-content: center;
+	align-items: center;
+	gap: 25px;
+}
+
+#blacklistText {
+	display: flex;
+	flex-flow: row;
+	flex-direction: column;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
 }
 
 #searchText h1 {
@@ -247,6 +266,7 @@ h1, h2 {
 .submitInput {
 	height: 30px;
 	width: 100px;
+	margin-top: 20px;
 }
 
 @media only screen and (max-width: 1400px) {

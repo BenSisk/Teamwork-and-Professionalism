@@ -62,7 +62,7 @@ class BlackList(forms.Form):
         black_list_website = update_website_list()
         self.fields['webBlackList'].choices = black_list_website
 
-    webBlackList = forms.TypedChoiceField(label='BlackList',
+    webBlackList = forms.TypedChoiceField(label='Website',
                                           widget=forms.Select(), initial='')
 
 
