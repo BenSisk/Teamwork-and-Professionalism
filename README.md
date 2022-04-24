@@ -6,7 +6,6 @@ Table of contents
 
 <!--ts-->
    * [Installation](#Installation)
-   * [Setup](#Setup)
       * [Database](#Database)
       * [Superuser](#Superuser)
    * [Tests](#Tests)
@@ -15,24 +14,29 @@ Table of contents
 <!--te-->
 
 ## Installation
+You can in stall the requirements with pip, or have your IDE
 
 ```
 pip install -r requirements.txt
 ```
 
-## Database
+### Database
 
+Let django create the database and the necessary tables
 ```
 python3 manage.py makemigration
 python3 manage.py migrate
 ```
 
-## Superuser
+### Superuser
+
+The created user will be used to access the admin panel
 ```
 python3 manage.py createsuperuser
 ```
 
 ## Test
+Optionally run the test suite
 ```
 python3 manage.py test -v 2
 ```
@@ -40,7 +44,7 @@ python3 manage.py test -v 2
 ## Server
 
 ```
-python3 manage.py test -v 2
+python3 manage.py runserver 0.0.0.0:80
 ```
 The server will now be available on http://127.0.0.1:80
 
