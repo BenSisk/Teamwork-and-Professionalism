@@ -34,12 +34,26 @@ def string_to_bool(data):
 
 
 class currentBlackList(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super(currentBlackList, self).__init__(*args, **kwargs)
-        current_black_list_website = update_blacklist()
-        self.fields['removeList'].choices = current_black_list_website
+	def __init__(self, *args, **kwargs):
+		super(currentBlackList, self).__init__(*args, **kwargs)
+		current_black_list_website = update_blacklist()
+		self.fields['removeList'].choices = current_black_list_website
 
-    removeList = forms.TypedChoiceField(label="Current items in blacklist", widget=forms.Select(), initial='')
+
+	def clean_website(self, test=None):
+		if test is not None:
+			website = test
+
+		if website is not str:
+			website=str(website)
+
+		if website == "":
+			website = "www.testwebsite.com"
+
+		return website
+
+
+	removeList = forms.TypedChoiceField(label="Current items in blacklist", widget=forms.Select(), initial='')
 
 
 class BlackList(forms.Form):

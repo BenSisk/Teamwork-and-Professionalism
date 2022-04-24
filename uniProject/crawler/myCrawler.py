@@ -12,6 +12,7 @@ from os import remove
 import base64
 from decimal import *
 from os.path import exists
+import string
 
 # Static configuration... Will move to a configuration file
 ENCODED_API_KEY = "ZTcxMTFlZGRlMTY2MDBiZjM4MmFkNDM3ZmM0YjI2OGIwNzc5MTY4ODBkNmE1NjljZjg5NzM4YTExN2RjNDFhYg=="
@@ -220,9 +221,34 @@ def calculate_volume(dimensions):
 
     return volume
 
+def parseSearchString(search):
+	if search is None:
+		search = "timber"
+
+	if search is "":
+		search = "timber"
+
+	search = str(search)
+
+	pattern = r'[' + string.punctuation + ']'
+
+	# Remove special characters from the string
+	search = regex.sub(pattern, '', search)
+
+	return search
+
+
+def isBool(input):
+	if input is not type(True):
+		input = False
+
+	return input
 
 # Don't waste all the API calls for now, only get a new page when specified
 def startCrawler(getNewPage, numResults, searchString, volume):
+    searchString = parseSearchString(searchString)
+    getNewPage = isBool(getNewPage)
+
     if getNewPage:
         if volume:
             searchString = searchString + "+%28L%29+%28T%29+%28W%29"
