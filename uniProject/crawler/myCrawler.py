@@ -13,6 +13,7 @@ import base64
 from decimal import *
 from os.path import exists
 import string
+import operator
 
 # Static configuration... Will move to a configuration file
 ENCODED_API_KEY = "ZTcxMTFlZGRlMTY2MDBiZjM4MmFkNDM3ZmM0YjI2OGIwNzc5MTY4ODBkNmE1NjljZjg5NzM4YTExN2RjNDFhYg=="
@@ -94,6 +95,8 @@ def get_delivery(key, price):
 
 
 def price_is_valid(price):
+	foundPrice = 0
+	price = price.strip("£")
 	for token in price.split():
 		try:
 			# if this succeeds, you have your (first) float
@@ -125,9 +128,8 @@ def extract_details(jsonFile, calcVolume):
                     dimensions.append(packSize)
 
                 volume = calculate_volume(dimensions)
-                price = float(key["price"].strip("£"))
 
-                price = price_is_valid(price)
+                price = price_is_valid(key["price"])
 
                 delivery = get_delivery(key, price)
 
@@ -145,8 +147,10 @@ def extract_details(jsonFile, calcVolume):
                     costPerVolume = Decimal(price) / Decimal(volume)
 
                 # key["link"].replace(urlStrip,"")
-                resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"],
-                              '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
+
+                if price > 0:
+                      resultList = [key["thumbnail"], key["title"], volume, "{:.2f}".format(price), delivery, key["link"],
+                                    '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
 
                 # only add if it's not in a blacklist
                 if not blackListed(key["link"]):
@@ -154,10 +158,11 @@ def extract_details(jsonFile, calcVolume):
 
             elif not calcVolume:
                 volume = "0"
-                price = key["price"].strip("£")
-                price = float(price.replace(',', ''))
+                price = price_is_valid(key["price"])
+
                 delivery = get_delivery(key, price)
-                resultList = [key["thumbnail"], key["title"], volume, key["price"], delivery, key["link"]]
+                if price > 0:
+                        resultList = [key["thumbnail"], key["title"], volume, "{:.2f}".format(price), delivery, key["link"]]
 
                 if not blackListed(key["link"]):
                     filteredResults.append(resultList)
@@ -167,7 +172,7 @@ def extract_details(jsonFile, calcVolume):
             sortedList = sorted(filteredResults, key=lambda x: x[6])
         else:
             # sort on price
-            sortedList = sorted(filteredResults, key=lambda x: x[3])
+            sortedList = sorted(filteredResults, key=lambda x: float(x[3]))
 
         return sortedList
     else:
@@ -259,7 +264,10 @@ def parseSearchString(search):
 
 
 def isBool(input):
-	if input is not type(True):
+
+	try:
+		input = bool(input)
+	except:
 		input = False
 
 	return input
@@ -276,12 +284,16 @@ def isInt(input):
 def startCrawler(getNewPage, numResults, searchString, volume):
     searchString = parseSearchString(searchString)
     getNewPage = isBool(getNewPage)
+    volumw = isBool(volume)
     numResults = isInt(numResults)
 
+    print("searching for {}".format(searchString))
+    print(getNewPage)
     if getNewPage:
         if volume:
             searchString = searchString + "+%28L%29+%28T%29+%28W%29"
 
+        print("searching for {}".format(searchString))
         data = get_json_results(searchString)
 
         if save_page(data):

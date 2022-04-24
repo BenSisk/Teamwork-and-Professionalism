@@ -128,3 +128,7 @@ class testCrawler(TestCase):
 		test = myCrawler.price_is_valid("this is a price 24.88 for a test")
 
 		self.assertEqual(test, 24.88)
+
+	def test_price_is_valid_tax(self):
+		test = myCrawler.price_is_valid("£24.88 + tax")
+		self.assertEqual(test, 24.88)
