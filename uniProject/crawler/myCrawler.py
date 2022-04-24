@@ -83,7 +83,7 @@ def get_delivery(key, price):
     else:
         try:
             delivery = str(regex.search("(?<=£)(.*)(?=\sdelivery)", key["delivery"]).group())
-        except NameError:
+        except AttributeError:
             if "Free" in key["delivery"]:
                 delivery = "0.00"
             else:
@@ -166,7 +166,7 @@ def extract_details(jsonFile, calcVolume):
 def extract_pack_size(title):
     try:
         results = regex.search("(?<=Pack of )[0-9]", title).group()
-    except NameError:
+    except AttributeError:
         packSize = False
         pass
     else:
@@ -181,7 +181,7 @@ def get_dimensions(title):
         dimension.append(regex.search('\(L\)[^\s]+', title).group())
         dimension.append(regex.search('\(W\)[^\s]+', title).group())
         dimension.append(regex.search('\(T\)[^\s]+', title).group())
-    except NameError:
+    except AttributeError:
         return False
     else:
         dimensions = strip_dimensions(dimension)
@@ -201,7 +201,7 @@ def convert_to_mm(dimensions):
     for x, item in enumerate(dimensions):
         try:
             results = regex.search("[0-9][Mm](?:^|\s|$)", item).group()
-        except:
+        except AttributeError:
             # no results, extract the digits
             dimensions[x] = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
             pass
