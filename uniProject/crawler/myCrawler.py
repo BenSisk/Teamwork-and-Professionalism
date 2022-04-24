@@ -166,7 +166,7 @@ def extract_details(jsonFile, calcVolume):
 
 def extract_pack_size(title):
     try:
-        results = regex.search("(?<=Pack of )[0-9]", title).group()
+        results = regex.search("(?<=pack of )[0-9]", title.lower()).group()
     except AttributeError:
         packSize = False
         pass
@@ -179,9 +179,9 @@ def extract_pack_size(title):
 def get_dimensions(title):
     dimension = []
     try:
-        dimension.append(regex.search('\(L\)[^\s]+', title).group())
-        dimension.append(regex.search('\(W\)[^\s]+', title).group())
-        dimension.append(regex.search('\(T\)[^\s]+', title).group())
+        dimension.append(regex.search('\(l\)[^\s]+', title.lower()).group())
+        dimension.append(regex.search('\(w\)[^\s]+', title.lower()).group())
+        dimension.append(regex.search('\(t\)[^\s]+', title.lower()).group())
     except AttributeError:
         return False
     else:
@@ -195,6 +195,10 @@ def strip_dimensions(dimensions):
     newDimensions = [s.replace('(L)', '') for s in dimensions]
     newDimensions = [s.replace('(W)', '') for s in newDimensions]
     newDimensions = [s.replace('(T)', '') for s in newDimensions]
+    newDimensions = [s.replace('(l)', '') for s in newDimensions]
+    newDimensions = [s.replace('(w)', '') for s in newDimensions]
+    newDimensions = [s.replace('(t)', '') for s in newDimensions]
+
     return newDimensions
 
 
@@ -204,8 +208,11 @@ def convert_to_mm(dimensions):
             results = regex.search("[0-9][Mm](?:^|\s|$)", item).group()
         except AttributeError:
             # no results, extract the digits
-            dimensions[x] = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
-            pass
+            try:
+                    dimensions[x] = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
+            except AttributeError:
+                    # return default dimensions of 0
+                    dimensions[x] = 0
         else:
             # extract dimensions which  contain a decimal place
             size = float(regex.search("[+-]?([0-9]*[.])?[0-9]+", item).group())
@@ -216,10 +223,13 @@ def convert_to_mm(dimensions):
 
 
 def calculate_volume(dimensions):
-    # convert to mm to inches
-    volume = (dimensions[0] / 25.4) * (dimensions[1] / 25.4) * (dimensions[2] / 25.4)
+	try:
+		volume = (int(dimensions[0]) / 25.4) * (int(dimensions[1]) / 25.4) * (int(dimensions[2]) / 25.4)
+	except ValueError:
+		# return volume of 0
+		volume = 0
 
-    return volume
+	return float(volume)
 
 def parseSearchString(search):
 	if search is None:
@@ -244,10 +254,19 @@ def isBool(input):
 
 	return input
 
+def isInt(input):
+	try:
+		input = int(input)
+	except ValueError:
+		input = -1
+
+	return input
+
 # Don't waste all the API calls for now, only get a new page when specified
 def startCrawler(getNewPage, numResults, searchString, volume):
     searchString = parseSearchString(searchString)
     getNewPage = isBool(getNewPage)
+    numResults = isInt(numResults)
 
     if getNewPage:
         if volume:
