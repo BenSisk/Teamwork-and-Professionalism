@@ -313,7 +313,7 @@ def strip_website(link):
     linkNew = linkNew.replace('https://', "")
     linkNew = linkNew.replace('http://', "")
 
-    link = regex.sub("(?:\/([a-zA-Z0-9].*))", "", linkNew)
+    link = regex.sub("(?:\/(.*))", "", linkNew)
 
     return link
 
@@ -329,6 +329,7 @@ def get_website_list():
     else:
         for key in data["shopping_results"]:
             link = key["link"]
+            # Remove special characters from the string
 
             link = strip_website(link)
 
