@@ -8,23 +8,23 @@
         <h1>Stock Management</h1>
         <div id="itemControlButtonContainer">
             <p class="itemControlButton"><a href="/addItems/"> Add Item ></a></p>
-            <p class="itemControlButton"><a href="/addItems/"> Edit Item ></a></p>
-            <p class="itemControlButton"><a href="/addItems/"> Delete Item ></a></p>
-        </div>
-        </div>
-        <div id="display_table">
             
+        </div>
+        </div>
+        <div id="display_table"> 
             <table class="table">
                 <thead>
-                    <th>Name </th>
-                    <th>Material Type</th>
-                    <th>Quantity</th>
+                    <th class="fitwidth">Name </th>
+                    <th class="fitwidth">Material Type</th>
+                    <th class="fitwidth">Quantity</th>
+                    <th class="fitwidth">Edit / Delete</th>
                 </thead>
             {% for instance in queryset %}
             <tr>
-                <td>{{instance.name}}</td>
-                <td>{{instance.materialType}}</td>
+                <td class="fitwidth">{{instance.name}}</a></td>
+                <td class="fitwidth">{{instance.materialType}}</td>
                 <td>{{instance.quantity}}</td>
+                <td><a href="{% url 'updateItems' instance.id %}">Edit</a> / <a href="{% url 'deleteItems' instance.id %}">Delete</a></td>
             </tr>
             {% endfor %}
             </table>

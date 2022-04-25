@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/materialStock.css' %}">
+<main>
+    <div id="flex">
+        <form method="post" action="">
+            {% csrf_token %}
+              <h1>Are you sure you want to delete?</h1><br>
+              <input class="deleteButton" type="submit" value="Yes" />
+              <a href="/stock"><div class="cancelDeleteButton">Cancel</div></a>
+         </form>
+    </div>
+</main>
+
+{% endblock %}
