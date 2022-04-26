@@ -70,6 +70,7 @@ def getGraph(data, timeframe, material, model):
 	# if query fails and triggers the except block, failedQuery is true and the graph is not plotted
 	failedQuery = False
 
+	next = 0
 	#query Azure server
 	next = queryAzure(timeframe, material, model)
 	
@@ -119,8 +120,7 @@ def prediction(request):
 		# default if no POST request
 		material = "plywood"
 		dateTimeframe = 1
-		#defualt changed to elasticnet due to votingensemble not existing as an endpoint yet
-		model = "elasticnet"
+		model = "votingensemble"
 
 	currentYear = dt.now().year
 	currentMonth = dt.now().month + dateTimeframe
