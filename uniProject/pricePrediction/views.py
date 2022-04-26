@@ -55,7 +55,9 @@ def queryAzure(date, material, model):
 		print(error.info())
 		print(error.read().decode("utf8", 'ignore'))
 		return -1
-
+	except Exception as e:
+		print ("Error: ",  e)
+		return -1
 	return result
 
 def getGraph(data, timeframe, material, model):
@@ -68,8 +70,8 @@ def getGraph(data, timeframe, material, model):
 	# if query fails and triggers the except block, failedQuery is true and the graph is not plotted
 	failedQuery = False
 
-	# next = queryAzure(timeframe, material, model)
-	next = 120
+	#query Azure server
+	next = queryAzure(timeframe, material, model)
 	
 	if (next == -1):
 		failedQuery = True
@@ -117,7 +119,8 @@ def prediction(request):
 		# default if no POST request
 		material = "plywood"
 		dateTimeframe = 1
-		model = "votingensemble"
+		#defualt changed to elasticnet due to votingensemble not existing as an endpoint yet
+		model = "elasticnet"
 
 	currentYear = dt.now().year
 	currentMonth = dt.now().month + dateTimeframe
