@@ -16,7 +16,7 @@ import string
 import operator
 
 # Static configuration... Will move to a configuration file
-ENCODED_API_KEY = "ZTcxMTFlZGRlMTY2MDBiZjM4MmFkNDM3ZmM0YjI2OGIwNzc5MTY4ODBkNmE1NjljZjg5NzM4YTExN2RjNDFhYg=="
+ENCODED_API_KEY = "YmZhZGM5YmNjNzQ2ZjhkMmVmODQxY2U4MzZmZGJhZmY5N2M3YzQwZDRhNGNiODllZGFjYTMwMTBhYWFhYmVhNw=="
 USER_AGENT = {
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36'}
 TMP_DIR = "/tmp/"

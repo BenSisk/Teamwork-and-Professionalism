@@ -4,6 +4,9 @@ from . import myCrawler
 from .forms import SearchCriteria, BlackList, currentBlackList
 
 
+def error_404(request, exception):
+	return render(request, '404.html')
+
 # Create your views here.
 @login_required
 def blacklist(request):

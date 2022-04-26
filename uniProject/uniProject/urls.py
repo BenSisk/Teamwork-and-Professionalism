@@ -20,6 +20,8 @@ from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import TemplateView
 
+handler404 = 'crawler.views.error_404'
+
 urlpatterns = [
     path('', include('adminSection.urls')),
     path('', include('crawler.urls')),
