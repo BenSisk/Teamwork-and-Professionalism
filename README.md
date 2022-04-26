@@ -57,6 +57,9 @@ The server will now be available on http://127.0.0.1:80
 ## Apps
 This project consists of multiple apps each developed by a member of the team.
 
+### Admin
+This core subsystem handles all authentication requirements for admin users to protect the aforementioned subsystems from unauthorised or malicious use. It also handles the landing page for admin users and allows for new product information to be taken, sanitised, and stored to a database for page population to the public at another time. Account management options are available for admin users, with strict password conventions required to ensure user safety.
+
 ### Crawler
 This app focuses on extracting search data from Google shopping using an api, and parsing the returned json data. Calculations are performed on the returned 
 materials such as calculating the volume (cost per cubic inch) of the material, and return the best value for money material.
