@@ -14,7 +14,7 @@ Table of contents
    * [Project Apps](#apps)
       * [Crawler](#crawler)
       * [Admin](#admin)
-      * [Price Prediction](#predict)
+      * [Price Prediction](#priceprediction)
       * [Stock Management](#stock)
       * [Showcase](#showcase)
 <!--te-->
@@ -65,5 +65,5 @@ Other parameters can be tuned on the crawler, such as disabling fetching a new p
 
 The ability to blacklist websites from the search result is also implimented within the crawler, saving the blacklisted sites in a basic text file, with robust error checking on the file, items can also be removed from the list.
 
-### predict
+### Price Prediction
 The price prediction system uses several deep learning algorithms via Microsoft Azure to provide powerful machine learning predicitons based on the price index of various materials. The price prediction has three configurable parameters: Material, Model, and Timescale. The material and model parameters are used to select which model is queried, and the timescale is used within the query to get a prediction of the price at that date. Two model architectures are available: ElasticNet and Voting Ensemble, however, more could be added easily by creating new web service endpoints with some small code modifications.
