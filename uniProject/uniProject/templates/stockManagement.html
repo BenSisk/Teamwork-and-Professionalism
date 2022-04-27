@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/materialStock.css' %}">
+<main>
+    <div>
+        <div id="StockManagementHeader">
+        <h1>Stock Management</h1>
+        <div id="itemControlButtonContainer">
+            <p class="itemControlButton"><a href="/addItems/"> Add Item ></a></p>
+            
+        </div>
+        </div>
+        <div id="display_table"> 
+            <table class="table">
+                <thead>
+                    <th class="fitwidth">Name </th>
+                    <th class="fitwidth">Material Type</th>
+                    <th class="fitwidth">Quantity</th>
+                    <th class="fitwidth">Edit / Delete</th>
+                </thead>
+            {% for instance in queryset %}
+            <tr>
+                <td class="fitwidth">{{instance.name}}</a></td>
+                <td class="fitwidth">{{instance.materialType}}</td>
+                <td>{{instance.quantity}}</td>
+                <td><a href="{% url 'updateItems' instance.id %}">Edit</a> / <a href="{% url 'deleteItems' instance.id %}">Delete</a></td>
+            </tr>
+            {% endfor %}
+            </table>
+            
+        </div>
+    </div>
+</main>
+
+{% endblock %}

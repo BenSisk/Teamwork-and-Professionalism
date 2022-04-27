@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'uniProject',
     'adminSection',
+    'materialStockApp',
 ]
 
 MIDDLEWARE = [
