@@ -1,0 +1,80 @@
+/* StockManagement.html */
+
+/* Header */
+#StockManagementHeader{
+    font-family: helvetica;
+    color: #337ab7;
+    text-align: center;
+    width: 100%;
+    display: block;
+    font-weight: bolder;
+}
+
+/* Add, Edit, Delete Buttons */
+.itemControlButton {
+    display: inline-block;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.itemControlButton a{
+    color: #ffffff;
+}
+
+.itemControlButton:hover{
+    background-color: #4D88F0;
+}
+
+/* Stock Items Table */
+table{
+    font-size: 20px;
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+    border-radius: 5px;
+}
+
+.table tr:nth-child(odd){
+	background: #e65e5e
+}
+
+.table tr:nth-child(even){
+	background-color:#db8b8b;
+}
+
+th, td, a {
+   color: white;
+}
+
+td.fitwidth {
+    width: 1px;
+    white-space: nowrap;
+}
+
+#display_table{
+    background-color: #ccc;
+    border-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+/* Add/Update Form */
+#displayForm{
+    
+    background-color: #ccc;
+    border-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-bottom: 20px;
+}
+
+#displayForm label {
+    color: #000;
+}
