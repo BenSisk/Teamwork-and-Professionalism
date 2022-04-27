@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
+from django.core.files.storage import FileSystemStorage
 from .models import Document
 from .forms import DocumentForm
 
@@ -35,7 +36,6 @@ def upload_view(request):
     # Handle file upload
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
-
         if form.is_valid():
             newdoc = Document(title = form.cleaned_data['title'], desc = form.cleaned_data['desc'], docfile=request.FILES['docfile'])
             x = str(request.FILES['docfile'])
@@ -61,8 +61,9 @@ def upload_view(request):
 
 def display_view(request):
  if request.method == 'GET':
-        img = Document.objects.all()
-        return render(request, 'product.html', {'newdoc': img})
+    documents = Document.objects.all()
+    context = {'documents': documents}
+    return render(request, 'products.html', context)
 
 @login_required
 def account_view(request):

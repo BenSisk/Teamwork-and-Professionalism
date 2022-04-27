@@ -1,0 +1,13 @@
+.row {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 5px;
+    flex-basis: content;
+}
+img { 
+    width: 100%;
+}
