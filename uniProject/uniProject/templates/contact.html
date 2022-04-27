@@ -3,10 +3,38 @@
 {% block content %}
         <main>
                 <div id="contactText">
-                        <h1>Contact</h1>
+                        <h1>Contact Us!</h1>
+                
+                        <form action="//submit.form" id="ContactUs100" method="post" onsubmit="return ValidateForm(this);">
+                                <script type="text/javascript">
+                                function ValidateForm(frm) {
+                                if (frm.Comments.value == "") { alert('Please enter your inquiries or questions.'); frm.Comments.focus(); return false; }
+                                return true; }
+                                </script>
+                                <table style="width:100%;max-width:550px;border:0;" cellpadding="8" cellspacing="0">
+                                <tr> <td>
+                                <label for="FromEmailAddress">Email address:</label>
+                                </td> <td>
+                                <input name="FromEmailAddress" type="text" maxlength="90" style="width:100%;max-width:250px;" />
+                                </td> </tr> <tr> <td>
+                                <label for="Questions">Comments*:</label>
+                                </td> <td>
+                                <textarea name="Comments" rows="7" cols="40" style="width:100%;max-width:350px;"></textarea>
+                                </td> </tr> <tr> <td>
+                                * - required fields
+                                </td> <td>
+                                <div style="float:right"><a href="https://www.100forms.com" id="lnk100" title="form to email">form to email</a></div>
+                                <input name="skip_Submit" type="submit" value="Submit" />
+                                <script src="https://www.100forms.com/js/FORMKEY:SJAECL95XN5Y/SEND:grsolutions.inquiries@gmail.com
+                                " type="text/javascript"></script>
+                                </td> </tr>
+                                </table>
+                                </form>
 
                         <p><b>Email: </b>contact@grsolutions.uk</p>
                         <p><b>Phone: </b>07xx xxx xxxx</p>
+
+                        
 
                 </div>
         </main>

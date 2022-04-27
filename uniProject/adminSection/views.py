@@ -59,6 +59,10 @@ def upload_view(request):
     context = {'documents': documents, 'form': form, 'message': message}
     return render(request, 'upload.html', context)
 
+def display_view(request):
+ if request.method == 'GET':
+        img = Document.objects.all()
+        return render(request, 'product.html', {'newdoc': img})
 
 @login_required
 def account_view(request):

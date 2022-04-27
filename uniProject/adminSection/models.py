@@ -5,6 +5,13 @@ from django.core.validators import validate_image_file_extension
 
 # Create your models here.
 
+class GetImage(models.Model):   
+    image = models.ImageField(upload_to='img/%Y/%m/%d/', blank=False)
+    name = models.CharField(max_length=100, blank=False)
+    designation = models.CharField(max_length=200, blank=True)
+    class Meta:
+        db_table = "gallery"
+
 class AppUser(AbstractUser):
     is_admin = models.BooleanField(default=False)
 
