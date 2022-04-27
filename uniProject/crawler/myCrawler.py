@@ -136,7 +136,6 @@ def extract_details(jsonFile, calcVolume):
                 # calculate the price per cubic meter including delivery
                 try:
                     price = price + float(delivery)
-                    delivery = "£" + delivery
                 except ValueError:
                     # no delivery cost
                     pass
