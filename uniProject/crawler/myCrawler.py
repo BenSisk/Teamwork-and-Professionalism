@@ -52,6 +52,7 @@ def get_json_results(searchString):
 
 def save_page(jsonData):
     try:
+	# remove existing file when fetching a new page
         if exists("data/data.json"):
             remove("data/data.json")
 
@@ -118,8 +119,6 @@ def extract_details(jsonFile, calcVolume):
             if calcVolume:
                 dimensions = get_dimensions(key["title"])
 
-            # get pack size
-
             # filter out products that don't have the dimensions in the title to avoid headaches
             if dimensions is not False and calcVolume:
                 packSize = extract_pack_size(key["title"])
@@ -133,7 +132,6 @@ def extract_details(jsonFile, calcVolume):
 
                 delivery = get_delivery(key, price)
 
-                # calculate the price per cubic meter including delivery
                 try:
                     price = price + float(delivery)
                 except ValueError:
@@ -145,8 +143,7 @@ def extract_details(jsonFile, calcVolume):
                 else:
                     costPerVolume = Decimal(price) / Decimal(volume)
 
-                # key["link"].replace(urlStrip,"")
-
+		# only add results that have a returned price
                 if price > 0:
                       resultList = [key["thumbnail"], key["title"], volume, "{:.2f}".format(price), delivery, key["link"],
                                     '{0:,.2f}'.format(float(round(costPerVolume, 2)))]
@@ -180,6 +177,7 @@ def extract_details(jsonFile, calcVolume):
 
 def extract_pack_size(title):
     try:
+	# search for pack size in title
         results = regex.search("(?<=pack of )[0-9]", title.lower()).group()
     except AttributeError:
         packSize = False
