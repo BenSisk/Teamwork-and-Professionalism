@@ -10,5 +10,5 @@ urlpatterns = [
  path('admin/', views.admin_view, name='admin'),
  path('upload/', views.upload_view, name='upload'),
  path('account/', views.account_view, name='account'),
- path('product', views.display_view, name='display')
+ path('products/', views.display_view, name='display')
 ]
