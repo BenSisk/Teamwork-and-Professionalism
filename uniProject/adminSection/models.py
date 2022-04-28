@@ -18,5 +18,5 @@ class AppUser(AbstractUser):
 class Document(models.Model):
     title = models.CharField(max_length=30)
     desc = models.CharField(max_length=200)
-    docfile = models.FileField('Image', upload_to='static/%Y/%m/%d',
+    docfile = models.FileField('Image', upload_to='uniProject/static/%Y/%m/%d',
                                validators=[validate_image_file_extension])
