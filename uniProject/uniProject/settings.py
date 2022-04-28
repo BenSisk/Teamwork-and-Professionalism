@@ -119,8 +119,8 @@ STATICFILES_DIRS = [
 
 ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', '45.147.230.182', 'fatalexception.co.uk']
 
-MEDIA_ROOT =  os.path.join(BASE_DIR, 'image') 
-MEDIA_URL = '/image/'
+#MEDIA_ROOT =  os.path.join(BASE_DIR, 'image') 
+#MEDIA_URL = '/image/'
 
 # Login configuration parameters
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
