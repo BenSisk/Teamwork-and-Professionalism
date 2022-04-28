@@ -1,20 +1,21 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-    <link rel="stylesheet" href="{% static 'css/upload.css' %}">
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
 
 <main>
     <div id="header">
         <span class='logo'>Available Products</span>
     </div>
-            <div>
-                <img src="{{ document.docfile.url }}"  height="200" width="200" />
+            <div class="row">
+                {% for document in documents %}
+                <img src="/{{ document.docfile.url }}"  height="200" width="200" />
 
                 <div>
-                <h2> {{ document.title.url }} </h2>
-                <p> {{ document.docfile.desc }} </p>
+                    <h2> {{ document.name }} </h2>
+                    <p> {{ document.desc }} </p>
                 </div>
-
+                {% endfor %}
                 <a href="{% url 'index' %}">Return to Home Page</a>
             </div>
            
