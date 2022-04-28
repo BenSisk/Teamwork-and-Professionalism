@@ -29,6 +29,6 @@ urlpatterns = [
     path('', include('materialStockApp.urls')),
     path("favicon.ico", RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),),
     path('contact/', TemplateView.as_view(template_name='contact.html')),
-    path('learn/', TemplateView.as_view(template_name='learn.html'))
+    path('learn/', TemplateView.as_view(template_name='learn.html')),
     path('contactThankYou/', TemplateView.as_view(template_name='contactThankYou.html'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
